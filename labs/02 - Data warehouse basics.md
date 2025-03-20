@@ -42,7 +42,7 @@ In this lab you will do something.
     - stage.DimStockItem
     - stage.FactSale
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/02_create_stage_tables.png"/>
 
 1. Create the dimensional model tables, making sure to first drop any tables that may already exist, by running the next cell in the workshop notebook. 
     - dbo.DimCity
@@ -52,7 +52,7 @@ In this lab you will do something.
     - dbo.DimStockItem
     - dbo.FactSale
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/02_create_dimensional_model_tables.png"/>
 
 1. Validate that the tables were all created by running the next cell in the notebook.
 
