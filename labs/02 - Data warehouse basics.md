@@ -16,9 +16,9 @@ This lab will cover:
 
 <hr>
 
-<h3 id="2.1">2.1 - Notebooks, query editor, and client tools</h3>
+<h3 id = "2.1">2.1 - Notebooks, query editor, and client tools</h3>
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 1 by selecting the workspace icon from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 1 by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -40,7 +40,7 @@ This lab will cover:
 
     <img src = "../assets/images/02_import_notebook_complete.png"/>
 
-<h3 id="2.2">2.2 - Creating schemas</h3>
+<h3 id = "2.2">2.2 - Creating schemas</h3>
 
 Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data warehouse basics**, and locate the **2.2 - Creating schemas** section.
 
@@ -67,7 +67,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     <img src = "../assets/images/02_schemas_after_create.png"/>
 
-<h3 id="2.3">2.3 - Creating tables</h3>
+<h3 id = "2.3">2.3 - Creating tables</h3>
 
 Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data warehouse basics**, and locate the **2.3 - Creating tables** section.
 
