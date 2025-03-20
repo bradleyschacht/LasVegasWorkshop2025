@@ -26,6 +26,8 @@ In this lab you will do something.
     SELECT * FROM sys.schemas
     ```
 
+    <img src = "../assets/images/1.png"/>
+
 1. Create a new schema called **stage** by running the next cell in the notebook.
 
     ``` sql
@@ -38,6 +40,8 @@ In this lab you will do something.
     ``` sql
     SELECT * FROM sys.schemas WHERE name = 'stage'
     ```
+
+    <img src = "../assets/images/2.png"/>
 
 ### 2.3 - Tables
 
