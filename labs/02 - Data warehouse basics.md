@@ -22,11 +22,11 @@ In this lab you will do something.
 
 1. In the workshop notebook, run the first cell in the **Labe 2 - Data warehouse basics** section which contains the query ```SELECT * FROM sys.schemas```. The results should look familiar for those used to working with SQL Server along with a new schema called *queryinsights* which will be used in Lab 7 - Data warehouse management.
 
-    <img src = "../assets/images/02_sys_schemas.png" />
+    <img src = "../assets/images/02_sys_schemas.png"/>
 
 1. Create a new schema called **stage** by running the next cell in the notebook.
 
-    <table border="2" cellpadding="0"><tr><td><img src = "../assets/images/02_create_schema.png"/></td></tr></table>
+    <img src = "../assets/images/02_create_schema.png"/>
     
 1. Validate that the schema was created by running the next cell in the notebook.
 
