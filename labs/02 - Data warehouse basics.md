@@ -14,7 +14,7 @@ In this lab you will do something.
 
 1. From the **Import status** pane on the right side of the screen, select **Upload**.
 
-1. Locate and select the **Modern Data Warehousing on Microsoft Fabric.ipynb** file on your computer. Select **Open**.
+1. Locate and select the **The Workshop.ipynb** file on your computer. Select **Open**.
 
 1. The notebook will be uploaded and appear in the workspace.
 
@@ -22,15 +22,15 @@ In this lab you will do something.
 
 1. In the workshop notebook, run the first cell in the **Labe 2 - Data warehouse basics** section which contains the query ```SELECT * FROM sys.schemas```. The results should look familiar for those used to working with SQL Server along with a new schema called *queryinsights* which will be used in Lab 7 - Data warehouse management.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/02_sys_schemas.png" />
 
 1. Create a new schema called **stage** by running the next cell in the notebook.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
-
+    <img src = "../assets/images/02_create_schema.png"/>
+    
 1. Validate that the schema was created by running the next cell in the notebook.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/02_schema_created.png"/>
 
 ### 2.3 - Tables
 
