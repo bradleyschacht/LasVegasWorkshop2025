@@ -26,7 +26,7 @@ In this lab you will do something.
 
 1. Create a new schema called **stage** by running the next cell in the notebook.
 
-    <table border="1" cellpadding="50"><tr><td><img src = "../assets/images/02_create_schema.png"/></td></tr></table>
+    <table border="2" cellpadding="0"><tr><td><img src = "../assets/images/02_create_schema.png"/></td></tr></table>
     
 1. Validate that the schema was created by running the next cell in the notebook.
 
