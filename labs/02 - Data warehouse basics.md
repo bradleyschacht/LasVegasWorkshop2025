@@ -7,11 +7,9 @@ Before you being, make sure you check out the [prerequisites](00.md). If you hav
 
 This lab will cover:
 
-<dl>
-<dt><a href="#2.1">Notebooks, query editor, and client tools</a></dt>
-<dt><a href="#2.2">Creating schemas</a></dt>
-<dt><a href="#2.3">Creating tables</a></dt>
-</dl>
+- <a href="#2.1">Notebooks, query editor, and client tools</a>
+- <a href="#2.2">Creating schemas</a>
+- <a href="#2.3">Creating tables</a>
 
 <h3 id="2.1">2.1 - Notebooks, query editor, and client tools</h3>
 
