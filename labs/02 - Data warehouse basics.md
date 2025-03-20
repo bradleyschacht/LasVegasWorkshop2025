@@ -11,6 +11,8 @@ This lab will cover:
 - <a href="#2.2">Creating schemas</a>
 - <a href="#2.3">Creating tables</a>
 
+<hr>
+
 <h3 id="2.1">2.1 - Notebooks, query editor, and client tools</h3>
 
 1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 1 by selecting the workspace icon from the left navigation bar. 
