@@ -3,7 +3,10 @@
 # End-to-End Data Engineering:<br>Modern Data Warehousing on Microsoft Fabric
 
 ## Lab 2 - Data warehouse basics
-Before you being, make sure you check out the [prerequisites](00.md). If you have not completed [Lab 1 - Getting started](<00 - Getting started.md>), go complete all the steps then return here to continue.
+Before you being:
+
+- Make sure you check out the [prerequisites](00.md).
+- If you have not completed [Lab 1 - Getting started](<00 - Getting started.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
 
@@ -307,11 +310,12 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 ## Next steps
 In this lab you created a new schema, stage (medallion bronze layer), to hold all the raw data before it is transformed into the dimensional model. You also created all the stage tables in the stage schema, and tables which will be used for the dimensional model (medaddion silver layer).
 
-- Continue to [Lab 3 - Loading Data](<03 - Loading Data.md>)</a>
+- Continue to [Lab 3 - Loading Data](<03 - Loading Data.md>)
+- Return to the [workshop homepage](<../README.md>)
 
 ## Additional Resources
-- <a href="https://learn.microsoft.com/en-us/fabric/data-warehouse/tables" target="_blank">Tables in data warehousing in Microsoft Fabric</a>
-- <a href="https://learn.microsoft.com/en-us/fabric/data-warehouse/data-types" target="_blank">Data types in Microsoft Fabric</a>
-- <a href="https://learn.microsoft.com/en-us/fabric/data-warehouse/table-constraints" target="_blank">Primary keys, foreign keys, and unique keys in Warehouse in Microsoft Fabric</a>
-- <a href="https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-dimension-tables" target="_blank">Dimensional modeling in Microsoft Fabric Warehouse: Dimension tables</a>
-- <a href="https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-fact-tables" target="_blank">Dimensional modeling in Microsoft Fabric Warehouse: Fact tables</a>
+- [Tables in data warehousing in Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/data-warehouse/tables)
+- [Data types in Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/data-warehouse/data-types)
+- [Primary keys, foreign keys, and unique keys in Warehouse in Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/data-warehouse/table-constraints)
+- [Dimensional modeling in Microsoft Fabric Warehouse: Dimension tables](https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-dimension-tables)
+- [Dimensional modeling in Microsoft Fabric Warehouse: Fact tables](https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-fact-tables)
