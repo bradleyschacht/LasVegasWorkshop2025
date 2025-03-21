@@ -17,7 +17,7 @@ This lab will cover:
 
 <h3 id = "6.1">6.1 - Time travel</h3>
 
-*Note: If you just completed Lab 5 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 6 - Advanced query techniques**, and locate the **6.1 - Time travel** section, and move straight to step 3 below.*
+*Note: If you just completed Lab 5 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 6 - Advanced query techniques**, locate the **6.1 - Time travel** section, and move straight to step 3 below.*
 
 1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
 

@@ -6,7 +6,7 @@
 Before you being:
 
 - Make sure you check out the [prerequisites](00.md).
-- If you have not completed [Lab 2 - Data warehouse DDL](<01 - Data warehouse DDL.md>), go complete all the steps then return here to continue.
+- If you have not completed [Lab 2 - Data warehouse DDL](<02 - Data warehouse DDL.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
 

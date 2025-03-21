@@ -18,7 +18,7 @@ This lab will cover:
 
 <h3 id = "7.1">7.1 - Checking important warehouse settings</h3>
 
-*Note: If you just completed Lab 6 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 7 - Data warehouse management**, and locate the **7.1 - Checking important warehouse settings** section, and move straight to step 3 below.*
+*Note: If you just completed Lab 6 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 7 - Data warehouse management**, locate the **7.1 - Checking important warehouse settings** section, and move straight to step 3 below.*
 
 1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
 

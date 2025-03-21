@@ -6,7 +6,7 @@
 Before you being:
 
 - Make sure you check out the [prerequisites](00.md).
-- If you have not completed [Lab 3 - Load data](<03 - Loading Data.md>), go complete all the steps then return here to continue.
+- If you have not completed [Lab 3 - Load data](<03 - Loading data.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
 
@@ -17,7 +17,7 @@ This lab will cover:
 
 <h3 id = "4.1">4.1 - Stored procedures</h3>
 
-*Note: If you just completed Lab 3 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 4 - Data transformation using T-SQL**, and locate the **4.1 - Stored procedures** section, and move straight to step 3 below.*
+*Note: If you just completed Lab 3 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 4 - Data transformation using T-SQL**, locate the **4.1 - Stored procedures** section, and move straight to step 3 below.*
 
 1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
 
