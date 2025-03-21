@@ -17,7 +17,7 @@ This lab will cover:
 
 <h3 id = "2.1">2.1 - Creating schemas</h3>
 
-*Note: If you just completed Lab 1 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 2 - Data warehouse DDL**, and locate the **2.1 - Creating schemas** section, and move straight to step 3 below.*
+*Note: If you just completed Lab 1 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 2 - Data warehouse DDL**, locate the **2.1 - Creating schemas** section, and move straight to step 3 below.*
 
 1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
 
@@ -44,7 +44,9 @@ This lab will cover:
     EXEC ('CREATE SCHEMA stage')
     ```
     
-1. Validate that the schema was created by running the cell for **Step 2.1.5** in *The Workshop* notebook. Your schema_id may be different. This is not a problem, we only need to validate that the *stage* schema is in the result.
+1. Validate that the schema was created by running the cell for **Step 2.1.5** in *The Workshop* notebook. 
+
+*Note: Your schema_id may be different. This is not a problem, we only need to validate that the *stage* schema is in the result.*
 
     ``` sql
     SELECT * FROM sys.schemas WHERE name = 'stage'
