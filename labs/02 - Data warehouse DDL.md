@@ -297,7 +297,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 ## Next steps
 In this lab you created a new schema, stage (medallion bronze layer), to hold all the raw data before it is transformed into the dimensional model. You also created all the stage tables in the stage schema, and tables which will be used for the dimensional model (medaddion silver layer).
 
-- Continue to [Lab 3 - Loading Data](<03 - Loading Data.md>)
+- Continue to [Lab 3 - Loading Data](<03 - Loading data.md>)
 - Return to the [workshop homepage](<../README.md>)
 
 ## Additional Resources
