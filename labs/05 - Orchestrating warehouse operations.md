@@ -3,44 +3,56 @@
 # End-to-End Data Engineering:<br>Modern Data Warehousing on Microsoft Fabric
 
 ## Lab 5 - Orchestrating warehouse operations
-In this lab you will do something. 
+Before you being:
 
-### 5.1 - Building an orchestration pipeline
+- Make sure you check out the [prerequisites](00.md).
+- If you have not completed [Lab 4 - Data transformation using T-SQL](<04 - Data transformation using T-SQL.md>), go complete all the steps then return here to continue.
 
-1. Return to the **Modern Data Warehousing on Microsoft Fabric** workspace item list by selecting the workspace name from the left navigation bar. 
+This lab will cover:
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+- <a href="#5.1">Building an orchestration pipeline</a>
+- <a href="#5.2">Scheduling the pipeline</a>
 
-1. Select **New item**.
+<hr>
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+<h3 id = "5.1">5.1 - Building an orchestration pipeline</h3>
+
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
+
+    *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
+
+    <img src = "../assets/images/05_navigation_bar.png" height="450px"/>
+
+1. Select **New item** located just below the workspace name.
+
+    <img src = "../assets/images/05_new_item.png"/>
 
 1. From the **All items** view, locate the **Get data** section and select the **Data pipeline** tile.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_new_item_list.png"/>
 
 1. On the **New pipeline** dialog box, enter the name **Load Dimensional Model** and select **Create**. The pipeline will be created and open to a blank canvas with a set of links to get started quickly. 
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_new_pipeline.png"/>
 
 1. Select the **Pipeline activity** tile and select **Script**.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_blank_canvas.png"/>
 
-1. Select the newly created **Script1** activity on the canvas. The bottom pane will change to display General and Settings for the script activity.
+1. Select the newly created **Script1** activity on the canvas. The bottom pane will display *General* and *Settings* for the script activity.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_new_script.png"/>
 
-1. With the newly created activity selected, on the **General** page, enter **SQL Load Stage FactSale** for the the **Name** of the activity. 
+1. With the **Script1** activity still selected, on the **General** page, enter **SQL Load Stage FactSale** for the the **Name** of the activity. 
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_fact_sale_general.png"/>
 
 1. Navigate to the **Settings** page.
 
     - From the **Connection** dropdown select the **WideWorldImportersDW** warehouse.
     - Leave the **Script** option as the default, **Query**.
     - Select the **pencil icon** to the right of the script box to open the editor.
-    - Enter the following code, which was also used in Lab 3 to copy the sales data from the lakehouse to the warehouse stage table.
+    - Enter the following code, which was also used in *Lab 3 - Loading data* to copy the sales data from the lakehouse to the warehouse stage table.
 
     ``` sql
     TRUNCATE TABLE stage.FactSale
@@ -71,22 +83,22 @@ In this lab you will do something.
 
     - Select **OK**.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_fact_sale_settings.png"/>
 
 1. From the ribbon, navigate to the **Activities** tab. Select the **Script** activity to add it to the canvas. 
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_second_script_added.png"/>
 
 1. With the newly created activity selected, on the **General** page, enter **SQL Load Stage Dimensions** for the the **Name** of the activity. 
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_dimensions_general.png"/>
 
 1. Navigate to the **Settings** page.
 
     - From the **Connection** dropdown select the **WideWorldImportersDW** warehouse.
     - Leave the **Script** option as the default, **Query**.
     - Select the **pencil icon** to the right of the script box to open the editor.
-    - Enter the following code, which is a modified version of what was used in Lab 3 to copy the data from Azure storage to the warehouse stage tables for all the dimensions.
+    - Enter the following code, which is a modified version of what was used in Lab 3 to copy the data from Azure storage to the warehouse stage tables for all the dimensions. The fact sale table has been omitted.
 
     ``` sql
     TRUNCATE TABLE stage.DimCity
@@ -102,15 +114,15 @@ In this lab you will do something.
 
     - Select **OK**.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_dimension_settings.png"/>
 
 1. From the ribbon, navigate to the **Activities** tab. Select the **Script** activity one final time to add it to the canvas. 
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_third_script_added.png"/>
 
 1. With the newly created activity selected, on the **General** page, enter **SQL Transform to Dimensional Model** for the the **Name** of the activity. 
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_dimensional_model_general.png"/>
 
 1. Navigate to the **Settings** page.
 
@@ -120,6 +132,7 @@ In this lab you will do something.
     - Enter the following code, which is a modified version of what was used in Lab 3 to copy the data from Azure storage to the warehouse stage tables for all the dimensions.
 
     ``` sql
+    EXEC dbo.CreateUnknownMembers;
     EXEC dbo.UpdateDimCity;
     EXEC dbo.UpdateDimCustomer;
     EXEC dbo.UpdateDimEmployee;
@@ -129,52 +142,113 @@ In this lab you will do something.
 
     - Select **OK**.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_dimensional_model_settings.png"/>
 
-1. With all three scripts configured, it is time to connect them to ensure the proper processing order is followed. Stage tables should be loaded before the dimensional model is updated. Locate the **checkbox** on the right side of the **SQL Load Stage FactSale** script activity. Click and hold on the checkbox to select the **On success** output. While continuing to hold the mouse buttong, drag and drop the arrow onto the **SQL Transform to Dimensional Model** script activity. A green line should now connect the two activities.
+1. With all three scripts configured, it is time to connect them to ensure the proper processing order is followed; stage tables should be loaded before the dimensional model is updated. Locate the **checkbox** on the right side of the **SQL Load Stage FactSale** script activity. Click and hold on the checkbox to select the **On success** (green checkbox) output. While continuing to hold the mouse buttong, drag and drop the arrow onto the **SQL Transform to Dimensional Model** script activity. A green line should now connect the two activities.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_constraints_first.png"/>
 
 1. Repeat the prior step to connect the **SQL Load Stage Dimensions** script activity to the **SQL Transform to Dimensional Model** script activity. Click and hold the **on success** checkbox on the right side of the SQL Load Stage Dimensions activity, then drag and drop it on the SQL Transform to Dimensional model script activity. 
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_constraints_second.png"/>
 
 1. Click the auto align canvas button on the canvas settings to better align the activities. Verify the pipeline is configured to load stage successfully before moving to update the dimensional model. The diagram should look similar to the image below.
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_arrange_diagram.png"/>
 
 1. Navigate to the **Home** tab on the ribbon and select **Save**.
 
-### 5.2 - Scheduling the pipeline
+    <img src = "../assets/images/05_save_pipeline.png"/>
 
-1. While still in the pipeline editor, select **Schedule** from the **Home** tab of the ribbon.
+<h3 id = "5.2">5.2 - Scheduling the pipeline</h3>
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+1. While still in the pipeline editor, navigate to the **Home** tab on the ribbon and select **Schedule**.
+
+    <img src = "../assets/images/05_schedule_pipeline.png"/>
 
 1. Configure the schedule with the following settings.
+
+    *Note: If you are going through this content outside the Fabric Community Conference workshop, you will need to adjust your dates and times accordingly. Start date and time should be a time at or before now, and the end date and time should be some time at least 30 minutes in the future to allow for some additional sales data to be loaded.*
 
     - Change the **Scheduled run** radio button to **On**.
     - Repeat: **By the minute**
     - Every: **1** minute(s)
-    - Start date and time: Select the calendar icon and select **today's date**. This should populate with the current date and time. Change the time to **9:00 AM** to align with the start time of the workshop.
-    - End date and time: Select the calendar icon and select **today's date**. This should populate with the current date and time. Change the time to **4:00 PM** to align with the conclusion of the workshop.
+    - Start date and time: **Today's date at 9:00 AM** to align with the start of the workshop.
+    - End date and time: **Today's date at 4:00 PM** to align with the conclusion of the workshop.
     - Time zone: **(UTC-8:00) Pacific Time (US and Canada)** to align with the time zone of the workshop.
     - Note at the top of the screen the next refresh delayed for should say **less than a minute**.
     - Select **Apply**.
+    - Select the **X** in the top right corner of the pane to close the schedule settings. 
 
-1. Wait for at least 1 minute for the next scheduled run of the pipeline to start then select **View run history** from the **Home** tab of the ribbon.
+    <img src = "../assets/images/05_schedule_pipeline_settings.png"/>
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+1. Wait for at least 1 minute for the next scheduled run of the pipeline to start then navigate to the **Home** tab on the ribbon and select **View run history**.
+
+    <img src = "../assets/images/05_view_run_history.png"/>
 
 1. Verify the pipeline's schedule is working by reviewing the recent runs list. This list is slightly delayed and may show a status of **Not started** even though the pipeline has completed. Select the **X** in the top right corner to close the recent runs pane. 
 
-    <img src = "../assets/images/microsoft-logo.png" height = 75/>
+    <img src = "../assets/images/05_recent_runs.png"/>
+
+<h3 id = "5.3">5.3 - Validating dimensional model load</h3>
+
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 1 by selecting the **workspace icon** from the left navigation bar. 
+
+    *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
+
+    <img src = "../assets/images/05_navigation_bar.png" height="450px"/>
+
+1. From the item list, select **The Workshop** notebook and navigate to **Lab 5 - Orchestrating warehouse operations**, and locate the **5.2 - Validating dimension model load** section.
+
+    <img src = "../assets/images/05_workspace.png"/>
+
+1. Check the record count on all the tables by running the cell for **Step 5.3.3** in *The Workshop* notebook. Upcon completion, the cell will a set of query results that shows the record count on all the stage and dimensional model tables. Take special note of the fact table's record count.
+
+    *Note: Your record counts should match the screenshot below for all the dimensions but your fact sale table will likely have a different record count from the screenshot below.*
+
+    ``` sql
+    SELECT 'dbo'   AS SchemaName, 'DimCity'        AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimCity       UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'DimCustomer'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimCustomer   UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'DimDate'        AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimDate       UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'DimEmployee'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimEmployee   UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'DimStockItem'   AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimStockItem  UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'FactSale'       AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.FactSale      UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimCity'        AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimCity       UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimCustomer'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimCustomer   UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimEmployee'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimEmployee   UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimStockItem'   AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimStockItem  UNION ALL
+    SELECT 'stage' AS SchemaName, 'FactSale'       AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.FactSale
+    ORDER BY
+        SchemaName,
+        TableName
+    ```
+
+    <img src = "../assets/images/05_validation_first.png"/>
+
+1. Wait several minutes for the pipeline process to run again at least once.
+
+1. Check the record count on all the tables again by running the cell for **Step 5.3.5** in *The Workshop* notebook. Upcon completion, the cell will a set of query results that shows the record count on all the stage and dimensional model tables. Take special note of the fact table's record count and compare them to your previous results from the cell for **Step 5.3.3** in *The Workshop* notebook.
+
+    *Note: Your record counts should match the screenshot below for all the dimensions but your fact sale table will likely have a different record count from the screenshot below.*
+
+    <img src = "../assets/images/05_validation_second.png"/>
 
 ## Next steps
-In this lab, we did something.
+In this lab you built a pipeline to orchestrate the repeated incremental loading of the data warehouse. You used a pipeline to ensure the operations happened in the proper order:
 
-- Continue to lab the [Lab 6 - Data transformation using T-SQL](<04 - Data transformation using T-SQL.md>) lab.
+- Stage is truncated
+- Stage is reloaded
+- Unknown members are added to the dimension tables
+- Dimension tables are incrementally loaded
+- Fact tables are incrementally loaded
 
-### Additional Resources
-<li><a href="https://learn.microsoft.com/en-us/fabric/fundamentals/create-workspaces" targer="_blank">Create a workspace</a></li>
-<li><a href="https://learn.microsoft.com/en-us/fabric/data-warehouse/create-warehouse" targer="_blank">Create a Warehouse in Microsoft Fabric</a></li>
+While there are many complexities that will come into play in the real world, like late arriving data, varying load schedules, incrementally loading the stage data, etc. the work done in the modules to this point will serve as a general guide for loading a data warehouse.
+
+- Continue to [Lab 6 - Advanced query techniques](<06 - Advanced query techniques.md>)
+- Return to the [workshop homepage](<../README.md>)
+
+## Additional Resources
+- [Dimensional modeling in Microsoft Fabric Warehouse: Load tables](https://learn.microsoft.com/en-us/fabric/data-warehouse/dimensional-modeling-load-tables#process-fact-tables)
+- [Data pipeline Runs](https://learn.microsoft.com/en-us/fabric/data-factory/pipeline-runs)
+- [How to monitor data pipeline runs in Microsoft Fabric](https://learn.microsoft.com/en-us/fabric/data-factory/monitor-pipeline-runs)
+- [How to use Script activity](https://learn.microsoft.com/en-us/fabric/data-factory/script-activity)

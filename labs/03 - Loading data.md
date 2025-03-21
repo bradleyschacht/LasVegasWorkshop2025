@@ -6,23 +6,23 @@
 Before you being:
 
 - Make sure you check out the [prerequisites](00.md).
-- If you have not completed [Lab 2 - Data warehouse basics](<01 - Data warehouse basics.md>), go complete all the steps then return here to continue.
+- If you have not completed [Lab 2 - Data warehouse DDL](<01 - Data warehouse DDL.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
 
-- <a href="#3.1">Something</a>
-- <a href="#3.2">Something</a>
-- <a href="#3.3">Something</a>
+- <a href="#3.1">Data Factory pipeline copy activity</a>
+- <a href="#3.2">T-SQL INSERT INTO...SELECT FROM</a>
+- <a href="#3.3">T-SQL COPY INTO</a>
 
 <hr>
 
 <h3 id = "3.1"> 3.1 - Data Factory pipeline copy activity</h3>
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 1 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
-    <img src = "../assets/images/02_navigation_bar.png" height="450px"/>
+    <img src = "../assets/images/03_navigation_bar.png" height="450px"/>
 
 1. Select **New item** located just below the workspace name.
 
@@ -108,27 +108,64 @@ This lab will cover:
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
-    <img src = "../assets/images/02_navigation_bar.png" height="450px"/>
+    <img src = "../assets/images/03_navigation_bar.png" height="450px"/>
 
-1. From the item list, select **The Workshop** notebook.
+1. From the item list, select **The Workshop** notebook and navigate to **Lab 3 - Loading data**, and locate the **3.2 - T-SQL INSERT INTO...SELECT FROM** section.
 
     <img src = "../assets/images/03_workspace.png"/>
 
-1. Truncate then load the stage table for FactSale from the lakehouse using a cross database query by running the first cell in the **3.2 - T-SQL INSERT INTO...SELECT FROM** section of The Workshop notebook.
+1. Truncate then load the stage table for FactSale from the lakehouse using a cross database query by running the cell for **Step 3.2.3** in *The Workshop* notebook. 
 
-    <img src = "../assets/images/microsoft.png"/>
+    *Note: This step loads the stage.FactSale table. In the first step of the next section you will be instructed to TRUNCATE and LOAD this same table. This is not an error. The goal of this section is to introduce the INSERT INTO...SELECT FROM loading pattern which will be used for incremental loads in Lab 5 - Orchestrating warehouse operations.*
 
-1. Upon completion, expand the **Messages** from the notebook cell's output to check the number of rows loaded. *Your row count will be different from the one picured below.*
+    ``` sql
+    TRUNCATE TABLE stage.FactSale
 
-    <img src = "../assets/images/microsoft.png"/>
+    INSERT INTO stage.FactSale
+    SELECT
+        [WWICityID]
+        ,[WWICustomerID]
+        ,[WWIBillToCustomerID]
+        ,[WWIStockItemID]
+        ,[InvoiceDateKey]
+        ,[DeliveryDateKey]
+        ,[WWISalespersonID]
+        ,[WWIInvoiceID]
+        ,[Description]
+        ,[Package]
+        ,[Quantity]
+        ,[UnitPrice]
+        ,[TaxRate]
+        ,[TotalExcludingTax]
+        ,[TaxAmount]
+        ,[Profit]
+        ,[TotalIncludingTax]
+        ,[TotalDryItems]
+        ,[TotalChillerItems]
+    FROM WideWorldImporters.dbo.Sale
+    ```
 
-1. Run the next cell and validate the row count on the table matches the number of rows affeced from the message in the prior step.
+1. Upon completion, the cell will have a messages output but no query results. Expand the **Messages** from the notebook cell's output. You can verify that two statements were run by the presence of two statement ids. The second message includes the number of records loaded into the table.
 
-    <img src = "../assets/images/microsoft.png"/>
+    *Note: Your record counts will be different than the record counts shown in the screenshot below.*
+
+    <img src = "../assets/images/03_insert_load.png"/>
+
+1. Validate the row count on the table matches the number of rows affeced from the message in the prior step by running the cell for **Step 3.2.5** in *The Workshop* notebook.
+
+    ``` sql
+    SELECT COUNT_BIG(*) FROM stage.FactSale
+    ```
+
+    <img src = "../assets/images/03_insert_record_count.png"/>
 
 <h3 id = "3.3">3.3 - T-SQL COPY INTO</h3>
 
-1. Truncate then load the stage tables listed below from Azure storage using the COPY INTO command by running the first cell in the **3.3 - T-SQL COPY INTO** section of The Workshop notebook.
+Before beginning, open *The Workshop* notebook, navigate to **Lab 3 - Data loading**, and locate the **3.3 - T-SQL COPY INTO** section.
+
+1. Truncate then load the stage tables listed below from Azure storage using the *COPY INTO* command by running the cell for **Step 3.3.1** in *The Workshop* notebook. Upon completion, the cell will have a messages output but no query results.
+
+    *Note: This step loads the stage.FactSale table. In the prior section this table was loaded using a different method. This is not an error. The prior section was to introduce a specific loading pattern which will be used again in a later lab. The purpose of this section's code it to see the initial dataset which is not present in the WideWorldImporters.dbo.Sale table used in the prior section.*
 
     - stage.DimCity
     - stage.DimCustomer
@@ -136,17 +173,59 @@ This lab will cover:
     - stage.DimStockItem
     - stage.FactSale
 
-    <img src = "../assets/images/microsoft.png"/>
+    ``` sql
+    TRUNCATE TABLE stage.DimCity
+    TRUNCATE TABLE stage.DimCustomer
+    TRUNCATE TABLE stage.DimEmployee
+    TRUNCATE TABLE stage.DimStockItem
+    TRUNCATE TABLE stage.FactSale
 
-1. Upon completion, run the next notebook cell to validate the number of rows loaded into all the stage tables. *Your row counts should match the screenshot below.*
+    COPY INTO [stage].[DimCity]      FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimCity.parquet'      WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimCustomer]  FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimCustomer.parquet'  WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimEmployee]  FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimEmployee.parquet'  WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimStockItem] FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimStockItem.parquet' WITH (FILE_TYPE = 'PARQUET');
+    /* The storage account location for FactSale only contains 2013-2016 data */
+    COPY INTO [stage].[FactSale]     FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/FactSale.parquet'     WITH (FILE_TYPE = 'PARQUET');
+    ```
 
-    <img src = "../assets/images/microsoft.png"/>
+    <img src = "../assets/images/03_copy_into_command.png"/>
+
+1. Upon completion, validate the number of rows loaded into all the stage tables by running the cell for **Step 3.3.2** in *The Workshop* notebook.
+
+    *Note: Your row counts **should** match the counts below.*
+
+    ``` sql
+    SELECT 'stage' AS SchemaName, 'DimCity'        AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimCity       UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimCustomer'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimCustomer   UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimEmployee'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimEmployee   UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimStockItem'   AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimStockItem  UNION ALL
+    SELECT 'stage' AS SchemaName, 'FactSale'       AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.FactSale
+    ORDER BY
+        SchemaName,
+        TableName
+    ```
+
+    <img src = "../assets/images/03_copy_into_record_counts.png"/>
+
+    <table style="tr:nth-child(even) {background-color: #f2f2f2;}; text-align: left; display: table; border-collapse: collapse; border-spacing: 2px; border-color: gray;">
+    <tr><th style="background-color: #1b20a1; color: white;">Table</th> <th style="background-color: #1b20a1; color: white;">Record Count</th></tr>
+    <tr><td>stage.DimCity</td>      <td>37,941</td></tr>
+    <tr><td>stage.DimCustomer</td>  <td>403</td></tr>
+    <tr><td>stage.DimEmployee</td>  <td>20</td></tr>
+    <tr><td>stage.DimStockItem</td> <td>228</td></tr>
+    <tr><td>stage.FactSale</td>     <td>228,265</td></tr>
+    </table>
 
 ## Next steps
-In this lab, we did something.
+In this lab you loaded data using a copy activity in a pipeline, the T-SQL INSERT INTO command to pull data from a lakehouse table, and the T-SQL COPY INTO command to load data from Azure storage. These are not the only methods for loading a data warehouse but they encompass the most commonly used methods. 
 
-- Continue to lab the [Lab 4 - Data transformation using T-SQL](<04 - Data transformation using T-SQL.md>) lab.
+- Continue to [Lab 4 - Data transformation using T-SQL](<04 - Data transformation using T-SQL.md>)
+- Return to the [workshop homepage](<../README.md>)
 
 ## Additional Resources
-<li><a href="https://learn.microsoft.com/en-us/fabric/fundamentals/create-workspaces" targer="_blank">Create a workspace</a></li>
-<li><a href="https://learn.microsoft.com/en-us/fabric/data-warehouse/create-warehouse" targer="_blank">Create a Warehouse in Microsoft Fabric</a></li>
+- [Ingest data into the Warehouse](https://learn.microsoft.com/en-us/fabric/data-warehouse/ingest-data)
+- [Ingest data into your Warehouse using the COPY statement](https://learn.microsoft.com/en-us/fabric/data-warehouse/ingest-data-copy)
+- [COPY INTO](https://learn.microsoft.com/en-us/sql/t-sql/statements/copy-into-transact-sql?view=fabric&preserve-view=true)
+- [Ingest data into existing tables with T-SQL queries](https://learn.microsoft.com/en-us/fabric/data-warehouse/ingest-data-tsql#ingesting-data-into-existing-tables-with-t-sql-queries)
+- [Ingest data into your Warehouse using data pipelines](https://learn.microsoft.com/en-us/fabric/data-warehouse/ingest-data-pipelines)
+- [Browse file content using OPENROWSET function](https://learn.microsoft.com/en-us/fabric/data-warehouse/browse-file-content-with-openrowset)

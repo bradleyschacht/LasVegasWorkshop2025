@@ -2,49 +2,34 @@
 
 # End-to-End Data Engineering:<br>Modern Data Warehousing on Microsoft Fabric
 
-## Lab 2 - Data warehouse basics
+## Lab 2 - Data warehouse DDL
 Before you being:
 
 - Make sure you check out the [prerequisites](00.md).
-- If you have not completed [Lab 1 - Getting started](<00 - Getting started.md>), go complete all the steps then return here to continue.
+- If you have not completed [Lab 1 - Getting started](<01 - Getting started.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
 
-- <a href="#2.1">Notebooks, query editor, and client tools</a>
-- <a href="#2.2">Creating schemas</a>
-- <a href="#2.3">Creating tables</a>
+- <a href="#2.1">Creating schemas</a>
+- <a href="#2.2">Creating tables</a>
 
 <hr>
 
-<h3 id = "2.1">2.1 - Notebooks, query editor, and client tools</h3>
+<h3 id = "2.1">2.1 - Creating schemas</h3>
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 1 by selecting the **workspace icon** from the left navigation bar. 
+*Note: If you just completed Lab 1 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 2 - Data warehouse DDL**, and locate the **2.1 - Creating schemas** section, and move straight to step 3 below.*
+
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
     <img src = "../assets/images/02_navigation_bar.png" height="450px"/>
 
-1. From the <b>Import</b> menu located just below the workspace name, select <b>Notebook -> From this computer</b>.
+1. From the item list, select **The Workshop** notebook and navigate to **Lab 2 - Data warehouse DDL**, and locate the **2.1 - Creating schemas** section.
 
-    <img src = "../assets/images/02_import_notebook_from_computer.png"/>
+    <img src = "../assets/images/02_workspace.png"/>
 
-1. From the **Import status** pane on the right side of the screen, select **Upload**.
-
-    <img src = "../assets/images/02_import_notebook_upload.png"/>
-
-1. Locate and select the **The Workshop.ipynb** file on your computer. Select **Open**.
-
-    <img src = "../assets/images/02_import_notebook_explorer.png"/>
-
-1. The notebook will be uploaded and appear in the workspace.
-
-    <img src = "../assets/images/02_import_notebook_complete.png"/>
-
-<h3 id = "2.2">2.2 - Creating schemas</h3>
-
-Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data warehouse basics**, and locate the **2.2 - Creating schemas** section.
-
-1. Look to see what schemas already exist by running the cell for **Step 2.2.1** in *The Workshop* notebook. The results should look familiar for those used to working with SQL Server. Notice a schema called *queryinsights* which will be used in *Lab 7 - Data warehouse management*.
+1. Look to see what schemas already exist by running the cell for **Step 2.1.3** in *The Workshop* notebook. The results should look familiar for those used to working with SQL Server. Notice a schema called *queryinsights* which will be used in *Lab 7 - Data warehouse management*.
 
     ``` sql
     SELECT * FROM sys.schemas
@@ -52,14 +37,14 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     <img src = "../assets/images/02_schemas_before_create.png"/>
 
-1. Create a new schema called **stage** by running the cell for **Step 2.2.2** in *The Workshop* notebook. There will be no output after running this cell.
+1. Create a new schema called **stage** by running the cell for **Step 2.1.4** in *The Workshop* notebook. There will be no output after running this cell.
 
     ``` sql
     IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'stage')
     EXEC ('CREATE SCHEMA stage')
     ```
     
-1. Validate that the schema was created by running the cell for **Step 2.2.3** in *The Workshop* notebook. Your schema_id may be different. This is not a problem, we only need to validate that the *stage* schema is in the result.
+1. Validate that the schema was created by running the cell for **Step 2.1.5** in *The Workshop* notebook. Your schema_id may be different. This is not a problem, we only need to validate that the *stage* schema is in the result.
 
     ``` sql
     SELECT * FROM sys.schemas WHERE name = 'stage'
@@ -67,11 +52,11 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     <img src = "../assets/images/02_schemas_after_create.png"/>
 
-<h3 id = "2.3">2.3 - Creating tables</h3>
+<h3 id = "2.2">2.2 - Creating tables</h3>
 
-Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data warehouse basics**, and locate the **2.3 - Creating tables** section.
+Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data warehouse basics**, and locate the **2.2 - Creating tables** section.
 
-1. Create the stage tables, making sure to first drop any tables that may already exist, by running the cell for **Step 2.3.1** in *The Workshop* notebook. Upon completion, the cell will have a messages output but no query results.
+1. Create the stage tables, making sure to first drop any tables that may already exist, by running the cell for **Step 2.2.1** in *The Workshop* notebook. Upon completion, the cell will have a messages output but no query results.
     - stage.DimCity
     - stage.DimCustomer
     - stage.DimDate
@@ -168,7 +153,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
     GO
     ```
 
-1. Create the dimensional model tables, making sure to first drop any tables that may already exist, by running the cell for **Step 2.3.2** in *The Workshop* notebook. Upon completion, the cell will have a messages output but no query results.
+1. Create the dimensional model tables, making sure to first drop any tables that may already exist, by running the cell for **Step 2.2.2** in *The Workshop* notebook. Upon completion, the cell will have a messages output but no query results.
     - dbo.DimCity
     - dbo.DimCustomer
     - dbo.DimDate
@@ -290,7 +275,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
     GO
     ```
 
-1. Validate that the tables were all created by running the cell for **Step 2.3.3** in *The Workshop* notebook and comparing to the output shown below.
+1. Validate that the tables were all created by running the cell for **Step 2.2.3** in *The Workshop* notebook and comparing to the output shown below.
 
     ``` sql
     SELECT
