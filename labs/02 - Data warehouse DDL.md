@@ -46,7 +46,7 @@ This lab will cover:
     
 1. Validate that the schema was created by running the cell for **Step 2.1.5** in *The Workshop* notebook. 
 
-*Note: Your schema_id may be different. This is not a problem, we only need to validate that the *stage* schema is in the result.*
+    *Note: Your schema_id may be different. This is not a problem, we only need to validate that the *stage* schema is in the result.*
 
     ``` sql
     SELECT * FROM sys.schemas WHERE name = 'stage'
