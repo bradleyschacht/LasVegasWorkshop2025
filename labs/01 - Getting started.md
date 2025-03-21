@@ -5,7 +5,6 @@
 Before you being:
 
 - Make sure you check out the [prerequisites](00.md).
-- If you have not completed [Lab 1 - Getting started](<00 - Getting started.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
 
