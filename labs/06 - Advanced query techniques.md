@@ -29,7 +29,7 @@ This lab will cover:
 
     <img src = "../assets/images/06_workspace.png"/>
 
-1. Check the number of records in *dbo.FactSale* and *stage.FactSale* for January 1, 2013 by running the cell for **Step 6.1.3** in *The Workshop* notebook. Upcon completion, the cell will a set of query results will be displayed. 
+1. Check the number of records in *dbo.FactSale* and *stage.FactSale* for January 1, 2013 by running the cell for **Step 6.1.3** in *The Workshop* notebook. Upon completion, the cell will a set of query results will be displayed. 
 
     ``` sql
     SELECT 'dbo.FactSale'   AS TableName, COUNT(*) AS RecordCount FROM dbo.FactSale   WHERE InvoiceDateKey = '2013-01-01' UNION ALL
@@ -41,7 +41,7 @@ This lab will cover:
 
     <img src = "../assets/images/06_time_travel_initial_record_count.png"/>
 
-1.  Delete the 89 records from January 1, 2013 and verify they were removed by running the cell for **Step 6.1.4** in *The Workshop* notebook. Upcon completion, the cell will a set of query results will be displayed. 
+1.  Delete the 89 records from January 1, 2013 and verify they were removed by running the cell for **Step 6.1.4** in *The Workshop* notebook. Upon completion, the cell will a set of query results will be displayed. 
 
     ``` sql
     DELETE FROM dbo.FactSale WHERE InvoiceDateKey = '2013-01-01'
@@ -50,7 +50,7 @@ This lab will cover:
 
     <img src = "../assets/images/06_time_travel_deleted_records.png"/>
 
-1. We can validate that the data looked a certain way in the past using time travel. Use a dynamic SQL statement to do a count on the table as it looked 30 minutes ago by running the cell for **Step 6.1.5** in *The Workshop* notebook. Upcon completion, the cell will a set of query results will be displayed.
+1. We can validate that the data looked a certain way in the past using time travel. Use a dynamic SQL statement to do a count on the table as it looked 30 minutes ago by running the cell for **Step 6.1.5** in *The Workshop* notebook. Upon completion, the cell will a set of query results will be displayed.
 
     ``` sql
     DECLARE @BeforeTheAccident VARCHAR(23) = (SELECT CONVERT(VARCHAR(23), DATEADD(MINUTE, -30, GETDATE()), 126))
