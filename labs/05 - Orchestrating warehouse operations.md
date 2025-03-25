@@ -176,8 +176,8 @@ This lab will cover:
     - Start date and time: **Today's date at 9:00 AM** to align with the start of the workshop.
     - End date and time: **Today's date at 4:00 PM** to align with the conclusion of the workshop.
     - Time zone: **(UTC-8:00) Pacific Time (US and Canada)** to align with the time zone of the workshop.
-    - Note at the top of the screen the next refresh delayed for should say **less than a minute**.
     - Select **Apply**.
+    - Note at the top of the screen the next refresh delayed for should say **less than a minute**.
     - Select the **X** in the top right corner of the pane to close the schedule settings. 
 
     <img src = "../assets/images/05_schedule_pipeline_settings.png"/>
