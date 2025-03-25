@@ -83,7 +83,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 6 - Advanced q
 
     ``` sql
     SELECT 'dbo.FactSale'         AS TableName, COUNT(*) AS RecordCount FROM dbo.FactSale          WHERE InvoiceDateKey = '2013-01-01' UNION ALL
-    SELECT 'dbo.FactSale_Recoery' AS TableName, COUNT(*) AS RecordCount FROM dbo.FactSale_Recovery WHERE InvoiceDateKey = '2013-01-01' UNION ALL
+    SELECT 'dbo.FactSale_Recovery' AS TableName, COUNT(*) AS RecordCount FROM dbo.FactSale_Recovery WHERE InvoiceDateKey = '2013-01-01' UNION ALL
     SELECT 'stage.FactSale'       AS TableName, COUNT(*) AS RecordCount FROM stage.FactSale        WHERE InvoiceDateKey = '2013-01-01'
     ORDER BY TableName DESC
     ```
@@ -99,7 +99,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 6 - Advanced q
     SELECT * FROM dbo.FactSale_Recovery WHERE InvoiceDateKey = '2013-01-01'
 
     SELECT 'dbo.FactSale'         AS TableName, COUNT(*) AS RecordCount FROM dbo.FactSale          WHERE InvoiceDateKey = '2013-01-01' UNION ALL
-    SELECT 'dbo.FactSale_Recoery' AS TableName, COUNT(*) AS RecordCount FROM dbo.FactSale_Recovery WHERE InvoiceDateKey = '2013-01-01' UNION ALL
+    SELECT 'dbo.FactSale_Recovery' AS TableName, COUNT(*) AS RecordCount FROM dbo.FactSale_Recovery WHERE InvoiceDateKey = '2013-01-01' UNION ALL
     SELECT 'stage.FactSale'       AS TableName, COUNT(*) AS RecordCount FROM stage.FactSale        WHERE InvoiceDateKey = '2013-01-01'
     ORDER BY TableName DESC
     ```
