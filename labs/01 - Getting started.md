@@ -39,14 +39,15 @@ This lab will cover:
         - New query (blank script, visual query, or notebook)
         - Templates for new tables, stored procedures, and more
         - Query activity monitor
-        - Semantic model settings
-        - New report
+        - Semantic model layout
+        - Download SQL database project
+        - Reporting
     - **Canvas** makes up the majority of the screen and will change based on where you are and what is selected. Items displayed include:
         - When no objects exist in the warehouse quick actions to get data, load sample data, write queries, or use a database project will be displayed. 
         - Data preview when selecting a table from the Explorer. 
         - Query editor
         - Visual query editor
-        - emantic model layout
+        - Semantic model layout
     - **Share** grants acceess to the currently open warehouse only providing options for varying permissions levels including:
         - Read all data using SQL
         - Read all OneLake data
