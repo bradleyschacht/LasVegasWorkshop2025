@@ -144,7 +144,7 @@ This lab will cover:
 
     <img src = "../assets/images/05_dimensional_model_settings.png"/>
 
-1. With all three scripts configured, it is time to connect them to ensure the proper processing order is followed; stage tables should be loaded before the dimensional model is updated. Locate the **checkbox** on the right side of the **SQL Load Stage FactSale** script activity. Click and hold on the checkbox to select the **On success** (green checkbox) output. While continuing to hold the mouse buttong, drag and drop the arrow onto the **SQL Transform to Dimensional Model** script activity. A green line should now connect the two activities.
+1. With all three scripts configured, it is time to connect them to ensure the proper processing order is followed; stage tables should be loaded before the dimensional model is updated. Locate the **checkbox** on the right side of the **SQL Load Stage FactSale** script activity. Click and hold on the checkbox to select the **On success** (green checkbox) output. While continuing to hold the mouse button, drag and drop the arrow onto the **SQL Transform to Dimensional Model** script activity. A green line should now connect the two activities.
 
     <img src = "../assets/images/05_constraints_first.png"/>
 
