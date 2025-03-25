@@ -38,7 +38,7 @@ Over the course of the seven labs in this workshop you will build the workflow s
 
 The labs will walk you through each click to ingest, store, and transform the data from individual tables into a dimensional model complete with stage tables, a dimensional model, surrogate keys, business keys, unknown members, and incremental loading logic. 
 
-The goal of this workshop is to teach the pattern not the dataset. As such, we will be using copies of the final dimensional model data as our source rather than providing the transactional tables as the source. For example, to create the stock itme table you may need to join four different tables together. Rather than requiring you to join four transactional tables we will be using one, already unified, table of data. 
+The goal of this workshop is to teach the pattern not the dataset. As such, we will be using copies of the final dimensional model data as our source rather than providing the transactional tables as the source. For example, to create the stock item table you may need to join four different tables together. Rather than requiring you to join four transactional tables we will be using one, already unified, table of data. 
 
 Additionally, the focus of this workshop is on the data warehouse. Therefore, while we do use other Fabric workloads, Data Factory for pipelines, we will not apply all the best practices for building robust, fault tolerant, dynamic pipelines. 
 
