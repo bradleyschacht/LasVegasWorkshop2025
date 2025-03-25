@@ -67,7 +67,7 @@ Now that we know the data exists, let's look at how table clones can help us rec
 
 Before beginning, open *The Workshop* notebook, navigate to **Lab 6 - Advanced query techniques**, and locate the **6.2 - Clone a table** section.
 
-1. Uses a dynamic SQL statement to create a clone of the dbo.FactSale table as of about 30 minutes ago when the data from January 1, 2013 was still present in the table by running the cell for **Step 6.2.1** in *The Workshop* notebook. Upon completion, the cell will have a messages output but no query results.
+1. Use a dynamic SQL statement to create a clone of the dbo.FactSale table as of about 30 minutes ago when the data from January 1, 2013 was still present in the table by running the cell for **Step 6.2.1** in *The Workshop* notebook. Upon completion, the cell will have a messages output but no query results.
 
     ``` sql
     DROP TABLE IF EXISTS dbo.FactSale_Recovery
