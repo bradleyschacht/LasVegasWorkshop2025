@@ -202,7 +202,7 @@ This lab will cover:
 
     <img src = "../assets/images/05_workspace.png"/>
 
-1. Check the record count on all the tables by running the cell for **Step 5.3.3** in *The Workshop* notebook. Upcon completion, the cell will a set of query results that shows the record count on all the stage and dimensional model tables. Take special note of the fact table's record count.
+1. Check the record count on all the tables by running the cell for **Step 5.3.3** in *The Workshop* notebook. Upon completion, the cell will display a set of query results that show the record counts on all the stage and dimensional model tables. Take special note of the fact table's record count.
 
     *Note: Your record counts should match the screenshot below for all the dimensions but your fact sale table will likely have a different record count from the screenshot below.*
 
@@ -227,7 +227,7 @@ This lab will cover:
 
 1. Wait several minutes for the pipeline process to run again at least once.
 
-1. Check the record count on all the tables again by running the cell for **Step 5.3.5** in *The Workshop* notebook. Upcon completion, the cell will a set of query results that shows the record count on all the stage and dimensional model tables. Take special note of the fact table's record count and compare them to your previous results from the cell for **Step 5.3.3** in *The Workshop* notebook.
+1. Check the record count on all the tables again by running the cell for **Step 5.3.5** in *The Workshop* notebook. Upon completion, the cell will display a set of query results that show the record count on all the stage and dimensional model tables. Take special note of the fact table's record count and compare them to your previous results from the cell for **Step 5.3.3** in *The Workshop* notebook.
 
     *Note: Your record counts should match the screenshot below for all the dimensions but your fact sale table will likely have a different record count from the screenshot below.*
 
