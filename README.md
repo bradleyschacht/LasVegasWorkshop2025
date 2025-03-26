@@ -34,7 +34,7 @@ Attendees will need to provide:
 
 ## Solution overview
 
-Over the course of the seven labs in this workshop you will build the workflow shown below. Source data is stored in two locations: an Azure storage account with static copies of several tables and a transactional system that will be generating new data throughout the workshop. The dataset being used in the [Wide World Importers DW](https://learn.microsoft.com/en-us/sql/samples/wide-world-importers-dw-install-configure?view=sql-server-ver16&tabs=sql-server) sample dataset from Microsoft. 
+Over the course of the seven labs in this workshop you will build the workflow shown below. Source data is stored in an Azure storage account with static copies of several tables. The dataset being used in the [Wide World Importers DW](https://learn.microsoft.com/en-us/sql/samples/wide-world-importers-dw-install-configure?view=sql-server-ver16&tabs=sql-server) sample dataset from Microsoft. 
 
 The labs will walk you through each click to ingest, store, and transform the data from individual tables into a dimensional model complete with stage tables, a dimensional model, surrogate keys, business keys, unknown members, and incremental loading logic. 
 
@@ -55,6 +55,10 @@ It is recommended that you complete the labs in the order presented and do not s
         <td style="background-color: AliceBlue; color: black;"><b>Lab</b></td>
         <td style="background-color: AliceBlue; color: black;"><b>Topics</b></td>
     </tr>
+    <tr>
+        <td><a href="labs/00 - Lab environment setup.md" >00 - Lab environment setup</a></td>
+        <td>Configure your Fabric environment including creating a workspace, assigning capacity, and creating your first data warehouse.</td>
+    </tr>    
     <tr>
         <td><a href="labs/01 - Getting started.md" >01 - Getting started</a></td>
         <td>Explore the Fabric data warehouse user interface, run queries, connect to the warehouse with client tools, and work with T-SQL notebooks.</td>

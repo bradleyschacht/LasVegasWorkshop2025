@@ -3,9 +3,10 @@
 # End-to-End Data Engineering:<br>Modern Data Warehousing on Microsoft Fabric
 
 ## Lab 6 - Advanced query techniques
+
 Before you being:
 
-- Make sure you check out the [prerequisites](00.md).
+- Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 5 - Orchestrating warehouse operations](<05 - Orchestrating warehouse operations.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
@@ -19,7 +20,7 @@ This lab will cover:
 
 *Note: If you just completed Lab 5 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 6 - Advanced query techniques**, locate the **6.1 - Time travel** section, and move straight to step 3 below.*
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -29,7 +30,7 @@ This lab will cover:
 
     <img src = "../assets/images/06_workspace.png"/>
 
-1. Check the number of records in *dbo.FactSale* and *stage.FactSale* for January 1, 2013 by running the cell for **Step 6.1.3** in *The Workshop* notebook. Upon completion, the cell will a set of query results will be displayed. 
+1. Check the number of records in *dbo.FactSale* and *stage.FactSale* for January 1, 2013 by running the cell for **Step 6.1.3** in *The Workshop* notebook. Upon completion, a set of query results will be displayed. 
 
     ``` sql
     SELECT 'dbo.FactSale'   AS TableName, COUNT(*) AS RecordCount FROM dbo.FactSale   WHERE InvoiceDateKey = '2013-01-01' UNION ALL
@@ -41,7 +42,7 @@ This lab will cover:
 
     <img src = "../assets/images/06_time_travel_initial_record_count.png"/>
 
-1.  Delete the 89 records from January 1, 2013 and verify they were removed by running the cell for **Step 6.1.4** in *The Workshop* notebook. Upon completion, the cell will a set of query results will be displayed. 
+1.  Delete the 89 records from January 1, 2013 and verify they were removed by running the cell for **Step 6.1.4** in *The Workshop* notebook. Upon completion, a set of query results will be displayed. 
 
     ``` sql
     DELETE FROM dbo.FactSale WHERE InvoiceDateKey = '2013-01-01'
@@ -50,7 +51,7 @@ This lab will cover:
 
     <img src = "../assets/images/06_time_travel_deleted_records.png"/>
 
-1. We can validate that the data looked a certain way in the past using time travel. Use a dynamic SQL statement to do a count on the table as it looked 30 minutes ago by running the cell for **Step 6.1.5** in *The Workshop* notebook. Upon completion, the cell will a set of query results will be displayed.
+1. We can validate that the data looked a certain way in the past using time travel. Use a dynamic SQL statement to do a count on the table as it looked 30 minutes ago by running the cell for **Step 6.1.5** in *The Workshop* notebook. Upon completion, a set of query results will be displayed.
 
     ``` sql
     DECLARE @BeforeTheAccident VARCHAR(23) = (SELECT CONVERT(VARCHAR(23), DATEADD(MINUTE, -30, GETDATE()), 126))

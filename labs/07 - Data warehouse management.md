@@ -3,9 +3,10 @@
 # End-to-End Data Engineering:<br>Modern Data Warehousing on Microsoft Fabric
 
 ## Lab 7 - Data warehouse management
+
 Before you being:
 
-- Make sure you check out the [prerequisites](00.md).
+- Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 6 - Advanced query techniques](<06 - Advanced query techniques.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
@@ -20,7 +21,7 @@ This lab will cover:
 
 *Note: If you just completed Lab 6 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 7 - Data warehouse management**, locate the **7.1 - Checking important warehouse settings** section, and move straight to step 3 below.*
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -105,11 +106,11 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 7 - Data wareh
 1. Manually create statistics on all the primary key columns by running the cell for **Step 7.2.2** in *The Workshop* notebook. Upon completion, the cell will have a messages output but no query results.
 
     ``` sql
-    CREATE STATISTICS dbo_DimCity_CityKey ON dbo.DimCity (CityKey) WITH FULLSCAN;
-    CREATE STATISTICS dbo_DimCustomer_CustomerKey ON dbo.DimCustomer (CustomerKey) WITH FULLSCAN;
+    CREATE STATISTICS dbo_DimCity_CitySK ON dbo.DimCity (CitySK) WITH FULLSCAN;
+    CREATE STATISTICS dbo_DimCustomer_CustomerSK ON dbo.DimCustomer (CustomerSK) WITH FULLSCAN;
     CREATE STATISTICS dbo_DimDate_Date ON dbo.DimDate (Date) WITH FULLSCAN;
-    CREATE STATISTICS dbo_DimEmployee_EmployeeKey ON dbo.DimEmployee (EmployeeKey) WITH FULLSCAN;
-    CREATE STATISTICS dbo_DimStockItem_StockItemKey ON dbo.DimStockItem (StockItemKey) WITH FULLSCAN;
+    CREATE STATISTICS dbo_DimEmployee_EmployeeSK ON dbo.DimEmployee (EmployeeSK) WITH FULLSCAN;
+    CREATE STATISTICS dbo_DimStockItem_StockItemSK ON dbo.DimStockItem (StockItemSK) WITH FULLSCAN;
     ```
 
     <img src = "../assets/images/07_statistics_created.png"/>
@@ -166,7 +167,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 7 - Data wareh
 
     <img src = "../assets/images/07_query_insights.png"/>
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 1 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -188,6 +189,10 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 7 - Data wareh
 In this lab you saw how to view important settings for you data warehouse including V-Order, Delta log publishing, and collation. You also checked statistics on tables, and manually created statistics. Finally, you saw a couple of ways to monitor operations on your data warehouse using T-SQL with Query Insights and through the Fabric warehouse UX.
 
 You did it! You completed all the labs for this workshop!
+
+This may be where our workshop ends today, but it is not the end of the analytics journey. Beyond the data warehouse is a world full of visualizations with Power BI, data science with Spark, and AI use cases waiting to bring more value to your business. We would encourage you to check out the rest of what Microsoft Fabric has to offer!
+
+- Return to the [workshop homepage](<../README.md>)
 
 ## Additional Resources
 - [Statistics](https://learn.microsoft.com/en-us/fabric/data-warehouse/statistics)

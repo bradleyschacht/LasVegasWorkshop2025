@@ -3,9 +3,10 @@
 # End-to-End Data Engineering:<br>Modern Data Warehousing on Microsoft Fabric
 
 ## Lab 4 - Data transformation using T-SQL
+
 Before you being:
 
-- Make sure you check out the [prerequisites](00.md).
+- Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 3 - Load data](<03 - Loading data.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
@@ -19,7 +20,7 @@ This lab will cover:
 
 *Note: If you just completed Lab 3 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 4 - Data transformation using T-SQL**, locate the **4.1 - Stored procedures** section, and move straight to step 3 below.*
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -32,29 +33,27 @@ This lab will cover:
 1. Create the stored procedure to generate the unknown member for each dimension table if it does not exist by running the cell for **Step 4.1.3** in *The Workshop* notebook. Upcon completion, the cell will have a message output but no query results.
 
     ``` sql
-    -- dbo.CreateUnknownMember stored procedure
     DROP PROCEDURE IF EXISTS dbo.CreateUnknownMembers
     GO
-
 
     CREATE PROCEDURE dbo.CreateUnknownMembers
     AS
     BEGIN
 
-        IF NOT EXISTS (SELECT * FROM dbo.DimCity WHERE CityKey = 0)
+        IF NOT EXISTS (SELECT * FROM dbo.DimCity WHERE CitySK = 0)
         INSERT INTO dbo.DimCity SELECT 0, 0, 'Unknown', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', NULL, 0
 
-        IF NOT EXISTS (SELECT * FROM dbo.DimCustomer WHERE CustomerKey = 0)
+        IF NOT EXISTS (SELECT * FROM dbo.DimCustomer WHERE CustomerSK = 0)
         INSERT INTO dbo.DimCustomer SELECT 0, 0, 'Unknown', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A'
 
-        IF NOT EXISTS (SELECT * FROM dbo.DimEmployee WHERE EmployeeKey = 0)
+        IF NOT EXISTS (SELECT * FROM dbo.DimEmployee WHERE EmployeeSK = 0)
         INSERT INTO dbo.DimEmployee SELECT 0, 0, 'Unknown', 'N/A', 0
 
-        IF NOT EXISTS (SELECT * FROM dbo.DimStockItem WHERE StockItemKey = 0)
+        IF NOT EXISTS (SELECT * FROM dbo.DimStockItem WHERE StockItemSK = 0)
         INSERT INTO dbo.DimStockItem SELECT 0, 0, 'Unknown', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 0, 0, 0, 'N/A', 0, 0, 0, 0
 
     END
-    GO   
+    GO 
     ```
 
     <img src = "../assets/images/04_stored_procedure_unknown_member.png"/>
@@ -73,7 +72,7 @@ This lab will cover:
 
         UPDATE destination
         SET
-            destination.[WWICityID] 				= source.[WWICityID],
+            destination.[CityAK] 				    = source.[CityKey],
             destination.[City] 						= source.[City],
             destination.[StateProvince] 			= source.[StateProvince],
             destination.[Country] 					= source.[Country],
@@ -85,14 +84,14 @@ This lab will cover:
             destination.[LatestRecordedPopulation] 	= source.[LatestRecordedPopulation]
         FROM dbo.DimCity AS destination
         INNER JOIN stage.DimCity AS source
-            ON destination.[WWICityID] = source.[WWICityID]
+            ON destination.[CityAK] = source.[CityKey]
 
-        DECLARE @MaxID BIGINT = (SELECT ISNULL(MAX(CityKey), 0) FROM dbo.DimCity)
+        DECLARE @MaxID BIGINT = (SELECT ISNULL(MAX(CitySK), 0) FROM dbo.DimCity)
 
         INSERT INTO dbo.DimCity
         SELECT
-            @MaxID + ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS [CityKey],
-            [WWICityID],
+            @MaxID + ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS [CitySK],
+            [CityKey],
             [City],
             [StateProvince],
             [Country],
@@ -103,7 +102,7 @@ This lab will cover:
             [Location],
             [LatestRecordedPopulation]
         FROM stage.DimCity
-        WHERE WWICityID NOT IN (SELECT WWICityID FROM dbo.DimCity)
+        WHERE CityKey NOT IN (SELECT CityAK FROM dbo.DimCity)
 
     END
     GO
@@ -119,7 +118,7 @@ This lab will cover:
 
         UPDATE destination
         SET
-            destination.[WWICustomerID] 	= source.[WWICustomerID],
+            destination.[CustomerAK] 	    = source.[CustomerKey],
             destination.[Customer] 			= source.[Customer],
             destination.[BillToCustomer] 	= source.[BillToCustomer],
             destination.[Category] 			= source.[Category],
@@ -128,14 +127,14 @@ This lab will cover:
             destination.[PostalCode] 		= source.[PostalCode]
         FROM dbo.DimCustomer AS destination
         INNER JOIN stage.DimCustomer AS source
-            ON destination.[WWICustomerID] = source.[WWICustomerID]
+            ON destination.[CustomerAK] = source.[CustomerKey]
 
-        DECLARE @MaxID BIGINT = (SELECT ISNULL(MAX(CustomerKey), 0) FROM dbo.DimCustomer)
+        DECLARE @MaxID BIGINT = (SELECT ISNULL(MAX(CustomerSK), 0) FROM dbo.DimCustomer)
 
         INSERT INTO dbo.DimCustomer
         SELECT
-            @MaxID + ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS [CustomerKey],
-            [WWICustomerID],
+            @MaxID + ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS [CustomerSK],
+            [CustomerKey],
             [Customer],
             [BillToCustomer],
             [Category],
@@ -143,7 +142,7 @@ This lab will cover:
             [PrimaryContact],
             [PostalCode]		
         FROM stage.DimCustomer
-        WHERE WWICustomerID NOT IN (SELECT WWICustomerID FROM dbo.DimCustomer)
+        WHERE CustomerKey NOT IN (SELECT CustomerAK FROM dbo.DimCustomer)
 
     END
     GO
@@ -159,25 +158,25 @@ This lab will cover:
 
         UPDATE destination
         SET
-            destination.[WWIEmployeeID] 	= source.[WWIEmployeeID],
+            destination.[EmployeeAK] 	    = source.[EmployeeKey],
             destination.[Employee] 			= source.[Employee],
             destination.[PreferredName] 	= source.[PreferredName],
             destination.[IsSalesperson]		= source.[IsSalesperson]
         FROM dbo.DimEmployee AS destination
         INNER JOIN stage.DimEmployee AS source
-            ON destination.[WWIEmployeeID] = source.[WWIEmployeeID]
+            ON destination.[EmployeeAK] = source.[EmployeeKey]
 
-        DECLARE @MaxID BIGINT = (SELECT ISNULL(MAX(EmployeeKey), 0) FROM dbo.DimEmployee)
+        DECLARE @MaxID BIGINT = (SELECT ISNULL(MAX(EmployeeSK), 0) FROM dbo.DimEmployee)
 
         INSERT INTO dbo.DimEmployee
         SELECT
-            @MaxID + ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS [EmployeeKey],
-            [WWIEmployeeID],
+            @MaxID + ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS [EmployeeSK],
+            [EmployeeKey],
             [Employee],
             [PreferredName],
             [IsSalesperson]		
         FROM stage.DimEmployee
-        WHERE WWIEmployeeID NOT IN (SELECT WWIEmployeeID FROM dbo.DimEmployee)
+        WHERE EmployeeKey NOT IN (SELECT EmployeeAK FROM dbo.DimEmployee)
 
     END
     GO
@@ -193,7 +192,7 @@ This lab will cover:
 
         UPDATE destination
         SET
-            destination.[WWIStockItemID] 			= source.[WWIStockItemID],
+            destination.[StockItemAK] 			    = source.[StockItemKey],
             destination.[StockItem] 				= source.[StockItem],
             destination.[Color] 					= source.[Color],
             destination.[SellingPackage] 			= source.[SellingPackage],
@@ -210,14 +209,14 @@ This lab will cover:
             destination.[TypicalWeightPerUnit] 		= source.[TypicalWeightPerUnit]
         FROM dbo.DimStockItem AS destination
         INNER JOIN stage.DimStockItem AS source
-            ON destination.[WWIStockItemID] = source.[WWIStockItemID]
+            ON destination.[StockItemAK] = source.[StockItemKey]
 
-        DECLARE @MaxID BIGINT = (SELECT ISNULL(MAX(StockItemKey), 0) FROM dbo.DimStockItem)
+        DECLARE @MaxID BIGINT = (SELECT ISNULL(MAX(StockItemSK), 0) FROM dbo.DimStockItem)
 
         INSERT INTO dbo.DimStockItem
         SELECT
-            @MaxID + ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS [StockItemKey],
-            [WWIStockItemID],
+            @MaxID + ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS [StockItemSK],
+            [StockItemKey],
             [StockItem],
             [Color],
             [SellingPackage],
@@ -233,7 +232,7 @@ This lab will cover:
             [RecommendedRetailPrice],
             [TypicalWeightPerUnit]
         FROM stage.DimStockItem
-        WHERE WWIStockItemID NOT IN (SELECT WWIStockItemID FROM dbo.DimStockItem)
+        WHERE StockItemKey NOT IN (SELECT StockItemAK FROM dbo.DimStockItem)
 
     END
     GO
@@ -252,13 +251,13 @@ This lab will cover:
         INSERT INTO dbo.FactSale
         SELECT
             @MaxID + ROW_NUMBER() OVER(ORDER BY (SELECT NULL)) AS [SaleKey],
-            ISNULL(dci.CityKey, 0) AS CityKey,
-            ISNULL(dcu.CustomerKey, 0) AS CustomerKey,
-            ISNULL(dbtc.CustomerKey, 0) AS BillToCustomerKey,
-            ISNULL(dsi.StockItemKey, 0) AS StockItemKey,
+            ISNULL(dci.CitySK, 0) AS CityKey,
+            ISNULL(dcu.CustomerSK, 0) AS CustomerKey,
+            ISNULL(dbtc.CustomerSK, 0) AS BillToCustomerKey,
+            ISNULL(dsi.StockItemSK, 0) AS StockItemKey,
             fs.InvoiceDateKey,
             fs.DeliveryDateKey,
-            ISNULL(de.EmployeeKey, 0) AS SalespersonKey,
+            ISNULL(de.EmployeeSK, 0) AS SalespersonKey,
             fs.WWIInvoiceID,
             fs.[Description],
             fs.Package,
@@ -273,18 +272,18 @@ This lab will cover:
             fs.TotalChillerItems
         FROM stage.FactSale AS fs
         LEFT JOIN dbo.DimCity AS dci
-            ON fs.WWICityID = dci.WWICityID
+            ON fs.CityKey = dci.CityAK
         LEFT JOIN dbo.DimCustomer AS dcu
-            ON fs.WWICustomerID = dcu.WWICustomerID
+            ON fs.CustomerKey = dcu.CustomerAK
         LEFT JOIN dbo.DimCustomer AS dbtc
-            ON fs.WWIBillToCustomerID = dbtc.WWICustomerID
+            ON fs.BillToCustomerKey = dbtc.CustomerAK
         LEFT JOIN dbo.DimStockItem AS dsi
-            ON fs.WWIStockItemID = dsi.WWIStockItemID
+            ON fs.StockItemKey = dsi.StockItemAK
         LEFT JOIN dbo.DimEmployee de
-            ON fs.WWISalespersonID = de.WWIEmployeeID
+            ON fs.SalespersonKey = de.EmployeeAK
         LEFT JOIN dbo.FactSale AS f
-            ON fs.WWIInvoiceID = f.WWIInvoiceID
-            AND dsi.StockItemKey = f.StockItemKey
+            ON fs.WWIInvoiceID = f.InvoiceID
+            AND dsi.StockItemSK = f.StockItemSK
             AND fs.InvoiceDateKey = f.InvoiceDateKey
         WHERE
             f.SaleKey IS NULL
@@ -295,11 +294,20 @@ This lab will cover:
 
     <img src = "../assets/images/04_stored_procedure_create.png"/>
 
-1. In the **Explorer**, refresh the warehouse object list by selecting the ellipsis (**...**) that appears when hovering the mouse of the warehouse name *WideWorldImportersDW*, then select **Refresh**.
+1. Validate the stored procedures were created by running the cell for **Step 4.1.5** in *The Workshop* notebook and comparing the results to those below.
+
+    ``` sql
+    SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = 'PROCEDURE'
+    ```
+
+    <img src = "../assets/images/04_stored_procedure_create_validate.png"/>
+
+
+1. If you prefer to validate using the **Explorer**, refresh the warehouse object list by selecting the ellipsis (**...**) that appears when hovering the mouse of the warehouse name *WideWorldImportersDW*, then select **Refresh**.
 
     <img src = "../assets/images/04_explorer_refresh.png"/>
 
-1. In the **Explorer**, expand **WideWorldImportersDW -> Schemas -> dbo -> Stored Procedures** to validate that all the procedures were created successfully.
+1. In the **Explorer**, expand **WideWorldImportersDW -> Schemas -> dbo -> Stored Procedures** to validate that all the procedures were created successfully. Do note that it can take up to **15 minutes** for the notebook Explorer to display the procedures even though they are in the database as seen in step 5 above.
 
     - CreateUnknownMembers
     - UpdateDimCity
@@ -351,15 +359,6 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 4 - Data trans
     The *RecordCount_AfterLoad* numbers should match those of the stage table record counts produced after running the COPY INTO commands at the end of *Lab 3 - Loading data* indicating all the data was loaded from stage into the dimensional model.
 
     <img src = "../assets/images/04_incremental_load_results.png"/>
-
-    <table style="tr:nth-child(even) {background-color: #f2f2f2;}; text-align: left; display: table; border-collapse: collapse; border-spacing: 2px; border-color: gray;">
-    <tr><th style="background-color: #1b20a1; color: white;">SchemaName</th> <th style="background-color: #1b20a1; color: white;">TableName</th> <th style="background-color: #1b20a1; color: white;">RecordCount_BeforeLoad</th> <th style="background-color: #1b20a1; color: white;">RecordCount_AfterLoad</th></tr>
-    <tr><td>dbo</td><td>DimCity</td>      <td>0</td><td>37,941</td></tr>
-    <tr><td>dbo</td><td>DimCustomer</td>  <td>0</td><td>403</td></tr>
-    <tr><td>dbo</td><td>DimEmployee</td>  <td>0</td><td>20</td></tr>
-    <tr><td>dbo</td><td>DimStockItem</td> <td>0</td><td>228</td></tr>
-    <tr><td>dbo</td><td>FactSale</td>     <td>0</td><td>228,265</td></tr>
-    </table>
 
 ## Next steps
 In this lab, you created several stored procedures that will be used to load data from the stage tables (medallion bronze layer) into the dimensional model (medallion silver layer). These procedures used a method for incremental loading where by existing records were updated if a key match was found and inserted if a key match was not found. You also created a surrogate key for each row inserted.

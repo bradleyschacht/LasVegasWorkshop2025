@@ -3,21 +3,23 @@
 # End-to-End Data Engineering:<br>Modern Data Warehousing on Microsoft Fabric
 
 ## Lab 5 - Orchestrating warehouse operations
+
 Before you being:
 
-- Make sure you check out the [prerequisites](00.md).
+- Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 4 - Data transformation using T-SQL](<04 - Data transformation using T-SQL.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
 
 - <a href="#5.1">Building an orchestration pipeline</a>
 - <a href="#5.2">Scheduling the pipeline</a>
+- <a href="#5.3">Validating dimensional model load</a>
 
 <hr>
 
 <h3 id = "5.1">5.1 - Building an orchestration pipeline</h3>
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -35,7 +37,7 @@ This lab will cover:
 
     <img src = "../assets/images/05_new_pipeline.png"/>
 
-1. Select the **Pipeline activity** tile and select **Script**.
+1. Select the **Pipeline activity** tile and select **Script** from the **Transform** section of the menu.
 
     <img src = "../assets/images/05_blank_canvas.png"/>
 
@@ -52,20 +54,20 @@ This lab will cover:
     - From the **Connection** dropdown select the **WideWorldImportersDW** warehouse.
     - Leave the **Script** option as the default, **Query**.
     - Select the **pencil icon** to the right of the script box to open the editor.
-    - Enter the following code, which was also used in *Lab 3 - Loading data* to copy the sales data from the lakehouse to the warehouse stage table.
+    - Enter the following code, which was also used in *Lab 3 - Loading data* to copy the sales data from the lakehouse to the warehouse stage table. Note this time we are excluding the 2013 data to simulate loading data incrementally.
 
     ``` sql
     TRUNCATE TABLE stage.FactSale
 
     INSERT INTO stage.FactSale
-    SELECT
-        [WWICityID]
-        ,[WWICustomerID]
-        ,[WWIBillToCustomerID]
-        ,[WWIStockItemID]
+    SELECT 
+        [CityKey]
+        ,[CustomerKey]
+        ,[BillToCustomerKey]
+        ,[StockItemKey]
         ,[InvoiceDateKey]
         ,[DeliveryDateKey]
-        ,[WWISalespersonID]
+        ,[SalespersonKey]
         ,[WWIInvoiceID]
         ,[Description]
         ,[Package]
@@ -78,7 +80,9 @@ This lab will cover:
         ,[TotalIncludingTax]
         ,[TotalDryItems]
         ,[TotalChillerItems]
-    FROM WideWorldImporters.dbo.Sale
+    FROM OPENROWSET(BULK 'https://fabrictutorialdata.blob.core.windows.net/sampledata/WideWorldImportersDW/parquet/tables/FactSale.parquet') AS FactSale
+    WHERE
+        YEAR(InvoiceDateKey) != 2013
     ```
 
     - Select **OK**.
@@ -106,10 +110,10 @@ This lab will cover:
     TRUNCATE TABLE stage.DimEmployee
     TRUNCATE TABLE stage.DimStockItem
 
-    COPY INTO [stage].[DimCity] FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimCity.parquet' WITH (FILE_TYPE = 'PARQUET');
-    COPY INTO [stage].[DimCustomer] FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimCustomer.parquet' WITH (FILE_TYPE = 'PARQUET');
-    COPY INTO [stage].[DimEmployee] FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimEmployee.parquet' WITH (FILE_TYPE = 'PARQUET');
-    COPY INTO [stage].[DimStockItem] FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimStockItem.parquet' WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimCity]      FROM 'https://fabrictutorialdata.blob.core.windows.net/sampledata/WideWorldImportersDW/parquet/tables/DimCity.parquet'      WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimCustomer]  FROM 'https://fabrictutorialdata.blob.core.windows.net/sampledata/WideWorldImportersDW/parquet/tables/DimCustomer.parquet'  WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimEmployee]  FROM 'https://fabrictutorialdata.blob.core.windows.net/sampledata/WideWorldImportersDW/parquet/tables/DimEmployee.parquet'  WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimStockItem] FROM 'https://fabrictutorialdata.blob.core.windows.net/sampledata/WideWorldImportersDW/parquet/tables/DimStockItem.parquet' WITH (FILE_TYPE = 'PARQUET');
     ```
 
     - Select **OK**.
@@ -152,7 +156,7 @@ This lab will cover:
 
     <img src = "../assets/images/05_constraints_second.png"/>
 
-1. Click the auto align canvas button on the canvas settings to better align the activities. Verify the pipeline is configured to load stage successfully before moving to update the dimensional model. The diagram should look similar to the image below.
+1. Select the **auto align** canvas button on the canvas settings to better align the activities. Verify the pipeline is configured to load stage successfully before moving to update the dimensional model. The diagram should look similar to the image below.
 
     <img src = "../assets/images/05_arrange_diagram.png"/>
 
@@ -168,7 +172,7 @@ This lab will cover:
 
 1. Configure the schedule with the following settings.
 
-    *Note: If you are going through this content outside the Fabric Community Conference workshop, you will need to adjust your dates and times accordingly. Start date and time should be a time at or before now, and the end date and time should be some time at least 30 minutes in the future to allow for some additional sales data to be loaded.*
+    *Note: If you are going through this content outside the Fabric Community Conference workshop, you will need to adjust your dates and times accordingly. Start date and time should be a time at or before now, and the end date and time should be some time at least 5 minutes in the future to allow for some additional sales data to be loaded.*
 
     - Change the **Scheduled run** radio button to **On**.
     - Repeat: **By the minute**
@@ -192,46 +196,48 @@ This lab will cover:
 
 <h3 id = "5.3">5.3 - Validating dimensional model load</h3>
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 1 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
     <img src = "../assets/images/05_navigation_bar.png" height="450px"/>
 
-1. From the item list, select **The Workshop** notebook and navigate to **Lab 5 - Orchestrating warehouse operations**, and locate the **5.2 - Validating dimension model load** section.
+1. From the item list, select **The Workshop** notebook and navigate to **Lab 5 - Orchestrating warehouse operations**, and locate the **5.3 - Validating dimensional model load** section.
 
     <img src = "../assets/images/05_workspace.png"/>
 
-1. Check the record count on all the tables by running the cell for **Step 5.3.3** in *The Workshop* notebook. Upon completion, the cell will display a set of query results that show the record counts on all the stage and dimensional model tables. Take special note of the fact table's record count.
+1. Check the record count on all the tables by running the cell for **Step 5.3.3** in *The Workshop* notebook. Upon completion, the cell will display a set of query results that show the record counts on all the stage and dimensional model tables. 
 
-    *Note: Your record counts should match the screenshot below for all the dimensions but your fact sale table will likely have a different record count from the screenshot below.*
+    Take special note of the fact table's record count. You will notice the stage table has a smaller number of records than the dimensional model table. This is because the stage table is loading all the data except 2013, but you loaded the 2013 data into the dimensional model in Lab 4. This can be seen very clearly by looking at the record counts for the FactSale table broken down by year. Notice the stage table has no 2013 data, but the dimensional model table does. 
 
     ``` sql
-    SELECT 'dbo'   AS SchemaName, 'DimCity'        AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimCity       UNION ALL
-    SELECT 'dbo'   AS SchemaName, 'DimCustomer'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimCustomer   UNION ALL
-    SELECT 'dbo'   AS SchemaName, 'DimDate'        AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimDate       UNION ALL
-    SELECT 'dbo'   AS SchemaName, 'DimEmployee'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimEmployee   UNION ALL
-    SELECT 'dbo'   AS SchemaName, 'DimStockItem'   AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimStockItem  UNION ALL
-    SELECT 'dbo'   AS SchemaName, 'FactSale'       AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.FactSale      UNION ALL
-    SELECT 'stage' AS SchemaName, 'DimCity'        AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimCity       UNION ALL
-    SELECT 'stage' AS SchemaName, 'DimCustomer'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimCustomer   UNION ALL
-    SELECT 'stage' AS SchemaName, 'DimEmployee'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimEmployee   UNION ALL
-    SELECT 'stage' AS SchemaName, 'DimStockItem'   AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimStockItem  UNION ALL
-    SELECT 'stage' AS SchemaName, 'FactSale'       AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.FactSale
+    SELECT 'dbo'   AS SchemaName, 'DimCity'         AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimCity                                      UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'DimCustomer'     AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimCustomer                                  UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'DimDate'         AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimDate                                      UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'DimEmployee'     AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimEmployee                                  UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'DimStockItem'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.DimStockItem                                 UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'FactSale'        AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.FactSale                                     UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'FactSale - 2013' AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.FactSale WHERE YEAR(InvoiceDateKey) = 2013   UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'FactSale - 2014' AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.FactSale WHERE YEAR(InvoiceDateKey) = 2014   UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'FactSale - 2015' AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.FactSale WHERE YEAR(InvoiceDateKey) = 2015   UNION ALL
+    SELECT 'dbo'   AS SchemaName, 'FactSale - 2016' AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM dbo.FactSale WHERE YEAR(InvoiceDateKey) = 2016   UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimCity'         AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimCity                                    UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimCustomer'     AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimCustomer                                UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimEmployee'     AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimEmployee                                UNION ALL
+    SELECT 'stage' AS SchemaName, 'DimStockItem'    AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.DimStockItem                               UNION ALL
+    SELECT 'stage' AS SchemaName, 'FactSale'        AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.FactSale                                   UNION ALL
+    SELECT 'stage' AS SchemaName, 'FactSale - 2013' AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.FactSale WHERE YEAR(InvoiceDateKey) = 2013 UNION ALL
+    SELECT 'stage' AS SchemaName, 'FactSale - 2014' AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.FactSale WHERE YEAR(InvoiceDateKey) = 2014 UNION ALL
+    SELECT 'stage' AS SchemaName, 'FactSale - 2015' AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.FactSale WHERE YEAR(InvoiceDateKey) = 2015 UNION ALL
+    SELECT 'stage' AS SchemaName, 'FactSale - 2016' AS TableName, FORMAT(COUNT_BIG(*), 'N0') AS RecordCount FROM stage.FactSale WHERE YEAR(InvoiceDateKey) = 2016
     ORDER BY
         SchemaName,
         TableName
     ```
 
-    <img src = "../assets/images/05_validation_first.png"/>
+    <img src = "../assets/images/05_validation.png"/>
 
-1. Wait several minutes for the pipeline process to run again at least once.
-
-1. Check the record count on all the tables again by running the cell for **Step 5.3.5** in *The Workshop* notebook. Upon completion, the cell will display a set of query results that show the record count on all the stage and dimensional model tables. Take special note of the fact table's record count and compare them to your previous results from the cell for **Step 5.3.3** in *The Workshop* notebook.
-
-    *Note: Your record counts should match the screenshot below for all the dimensions but your fact sale table will likely have a different record count from the screenshot below.*
-
-    <img src = "../assets/images/05_validation_second.png"/>
+1. If you were to rerun the query from the prior step every minute, you will notice the 2013 data remains in the dimensional model table but it never gets reloaded into the stage table. Similarly, the 2014-2016 data will be loaded into stage, but the incremental logic prevents the data from duplicating in the fact table.
 
 ## Next steps
 In this lab you built a pipeline to orchestrate the repeated incremental loading of the data warehouse. You used a pipeline to ensure the operations happened in the proper order:

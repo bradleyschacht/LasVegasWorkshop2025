@@ -3,9 +3,10 @@
 # End-to-End Data Engineering:<br>Modern Data Warehousing on Microsoft Fabric
 
 ## Lab 2 - Data warehouse DDL
+
 Before you being:
 
-- Make sure you check out the [prerequisites](00.md).
+- Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 1 - Getting started](<01 - Getting started.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
@@ -19,7 +20,7 @@ This lab will cover:
 
 *Note: If you just completed Lab 1 and still have The Workshop notebook open, remain in The Workshop notebook, navigate to **Lab 2 - Data warehouse DDL**, locate the **2.1 - Creating schemas** section, and move straight to step 3 below.*
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -61,7 +62,6 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 1. Create the stage tables, making sure to first drop any tables that may already exist, by running the cell for **Step 2.2.1** in *The Workshop* notebook. Upon completion, the cell will have a messages output but no query results.
     - stage.DimCity
     - stage.DimCustomer
-    - stage.DimDate
     - stage.DimEmployee
     - stage.DimStockItem
     - stage.FactSale
@@ -76,7 +76,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     CREATE TABLE [stage].[DimCity]
         (
-            [WWICityID]                 [int]            NOT NULL,
+            [CityKey]                   [int]            NOT NULL,
             [City]                      [varchar](50)    NOT NULL,
             [StateProvince]             [varchar](50)    NOT NULL,
             [Country]                   [varchar](60)    NOT NULL,
@@ -91,7 +91,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     CREATE TABLE [stage].[DimCustomer]
         (
-            [WWICustomerID]             [int]            NOT NULL,
+            [CustomerKey]               [int]            NOT NULL,
             [Customer]                  [varchar](100)   NOT NULL,
             [BillToCustomer]            [varchar](100)   NOT NULL,
             [Category]                  [varchar](50)    NOT NULL,
@@ -103,7 +103,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     CREATE TABLE [stage].[DimEmployee]
         (
-            [WWIEmployeeID]             [int]            NOT NULL,
+            [EmployeeKey]               [int]            NOT NULL,
             [Employee]                  [varchar](50)    NOT NULL,
             [PreferredName]             [varchar](50)    NOT NULL,
             [IsSalesperson]             [bit]            NOT NULL
@@ -112,7 +112,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     CREATE TABLE [stage].[DimStockItem]
         (
-            [WWIStockItemID]            [int]            NOT NULL,
+            [StockItemKey]              [int]            NOT NULL,
             [StockItem]                 [varchar](100)   NOT NULL,
             [Color]                     [varchar](20)    NOT NULL,
             [SellingPackage]            [varchar](50)    NOT NULL,
@@ -132,13 +132,13 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     CREATE TABLE [stage].[FactSale]
         (
-            [WWICityID]                 [int]            NOT NULL,
-            [WWICustomerID]             [int]            NOT NULL,
-            [WWIBillToCustomerID]       [int]            NOT NULL,
-            [WWIStockItemID]            [int]            NOT NULL,
+            [CityKey]                   [int]            NOT NULL,
+            [CustomerKey]               [int]            NOT NULL,
+            [BillToCustomerKey]         [int]            NOT NULL,
+            [StockItemKey]              [int]            NOT NULL,
             [InvoiceDateKey]            [date]           NOT NULL,
             [DeliveryDateKey]           [date]           NULL,
-            [WWISalespersonID]          [int]            NOT NULL,
+            [SalespersonKey]            [int]            NOT NULL,
             [WWIInvoiceID]              [int]            NOT NULL,
             [Description]               [varchar](100)   NOT NULL,
             [Package]                   [varchar](50)    NOT NULL,
@@ -174,8 +174,8 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     CREATE TABLE [dbo].[DimCity]
         (
-            [CityKey]                   [int]            NOT NULL,
-            [WWICityID]                 [int]            NOT NULL,
+            [CitySK]                    [int]            NOT NULL,
+            [CityAK]                    [int]            NOT NULL,
             [City]                      [varchar](50)    NOT NULL,
             [StateProvince]             [varchar](50)    NOT NULL,
             [Country]                   [varchar](60)    NOT NULL,
@@ -190,8 +190,8 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     CREATE TABLE [dbo].[DimCustomer]
         (
-            [CustomerKey]               [int]            NOT NULL,
-            [WWICustomerID]             [int]            NOT NULL,
+            [CustomerSK]                [int]            NOT NULL,
+            [CustomerAK]                [int]            NOT NULL,
             [Customer]                  [varchar](100)   NOT NULL,
             [BillToCustomer]            [varchar](100)   NOT NULL,
             [Category]                  [varchar](50)    NOT NULL,
@@ -222,8 +222,8 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     CREATE TABLE [dbo].[DimEmployee]
         (
-            [EmployeeKey]               [int]            NOT NULL,
-            [WWIEmployeeID]             [int]            NOT NULL,
+            [EmployeeSK]                [int]            NOT NULL,
+            [EmployeeAK]                [int]            NOT NULL,
             [Employee]                  [varchar](50)    NOT NULL,
             [PreferredName]             [varchar](50)    NOT NULL,
             [IsSalesperson]             [bit]            NOT NULL
@@ -232,8 +232,8 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
     CREATE TABLE [dbo].[DimStockItem]
         (
-            [StockItemKey]              [int]            NOT NULL,
-            [WWIStockItemID]            [int]            NOT NULL,
+            [StockItemSK]               [int]            NOT NULL,
+            [StockItemAK]               [int]            NOT NULL,
             [StockItem]                 [varchar](100)   NOT NULL,
             [Color]                     [varchar](20)    NOT NULL,
             [SellingPackage]            [varchar](50)    NOT NULL,
@@ -254,14 +254,14 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
     CREATE TABLE [dbo].[FactSale]
         (
             [SaleKey]                   [bigint]         NOT NULL,
-            [CityKey]                   [int]            NOT NULL,
-            [CustomerKey]               [int]            NOT NULL,
-            [BillToCustomerKey]         [int]            NOT NULL,
-            [StockItemKey]              [int]            NOT NULL,
+            [CitySK]                    [int]            NOT NULL,
+            [CustomerSK]                [int]            NOT NULL,
+            [BillToCustomerSK]          [int]            NOT NULL,
+            [StockItemSK]               [int]            NOT NULL,
             [InvoiceDateKey]            [date]           NOT NULL,
             [DeliveryDateKey]           [date]           NULL,
-            [SalespersonKey]            [int]            NOT NULL,
-            [WWIInvoiceID]              [int]            NOT NULL,
+            [SalespersonSK]             [int]            NOT NULL,
+            [InvoiceID]                 [int]            NOT NULL,
             [Description]               [varchar](100)   NOT NULL,
             [Package]                   [varchar](50)    NOT NULL,
             [Quantity]                  [int]            NOT NULL,
@@ -295,7 +295,7 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 2 - Data wareh
 
 
 ## Next steps
-In this lab you created a new schema, stage (medallion bronze layer), to hold all the raw data before it is transformed into the dimensional model. You also created all the stage tables in the stage schema, and tables which will be used for the dimensional model (medallion silver layer).
+In this lab you created a new schema, stage, to hold all the raw data before it is transformed into the dimensional model. You also created all the stage tables in the stage schema (medallion bronze layer), and tables which will be used for the dimensional model (medallion silver layer).
 
 - Continue to [Lab 3 - Loading Data](<03 - Loading data.md>)
 - Return to the [workshop homepage](<../README.md>)

@@ -2,9 +2,12 @@
 
 # End-to-End Data Engineering: <br> Modern Data Warehousing on Microsoft Fabric
 
+## Lab 1 - Getting started
+
 Before you being:
 
-- Make sure you check out the [prerequisites](00.md).
+- Make sure you have read the overview on the [workshop homepage](<../README.md>).
+- If you have not completed [Lab 0 - Lab environment setup](<00 - Lab environment setup.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
 
@@ -16,7 +19,7 @@ This lab will cover:
 
 <h3 id="1.1">1.1 - Exploring the Fabric UX</h3>
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -73,7 +76,7 @@ This lab will cover:
     INSERT INTO dbo.table1 VALUES (1), (2)
     ```
 
-1. You can have multiple statements in the same query but selectively run portions of the query. To do this, in the query window, highlight the INSERT statement from the prior step, then select **Run** from the top of the query editor tab.
+1. You can have multiple statements in the same query but selectively run portions of the query. To do this, in the query window, **highlight** the INSERT statement from the prior step, then select **Run** from the top of the query editor tab.
 
     *Note: In the messages window you will find the distributed statement id and the statement runtime below the messages window.*
     
@@ -85,7 +88,7 @@ This lab will cover:
     SELECT * FROM dbo.table1
     ```
 
-1. Highlight the SELECT statement from the prior step, then select **Run** from the top of the query editor tab.
+1. **Highlight** the SELECT statement from the prior step, then select **Run** from the top of the query editor tab.
 
     *Note: The results grid will be displayed and you can optionally view the messages output.*
 
@@ -145,7 +148,9 @@ This lab will cover:
 
 <h3 id = "1.3">1.3 - T-SQL notebooks</h3>
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
+1. Download [The Workshop.ipynb](<../assets/code/The Workshop.ipynb>) notebook (found in the assets/code folder of the GitHub repo) and save it to your computer. This notebook will be used throughout the remaining labs so you do not need to copy/paste code frequently from the GitHub repo to the Fabric UX. For details on how the lab steps correspond to notebook cells review the **Notebook based experience** section near the bottom of the [workshop homepage](<../README.md>).
+
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -179,7 +184,7 @@ This lab will cover:
 
     <img src = "../assets/images/01_explorer_onelake_catalog.png"/>
 
-1. Validate the notebook is indeed connected to the proper database by running the cell for **Step 1.3.9** in *The Workshop* notebook and comparing the results to those in the screenshot below.
+1. Validate the notebook is indeed connected to the proper database by running the cell for **Step 1.3.10** in *The Workshop* notebook and comparing the results to those in the screenshot below.
 
     ``` sql
     SELECT DB_NAME() AS DatabaseName

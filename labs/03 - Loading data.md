@@ -3,9 +3,10 @@
 # End-to-End Data Engineering:<br>Modern Data Warehousing on Microsoft Fabric
 
 ## Lab 3 - Loading data
+
 Before you being:
 
-- Make sure you check out the [prerequisites](00.md).
+- Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 2 - Data warehouse DDL](<02 - Data warehouse DDL.md>), go complete all the steps then return here to continue.
 
 This lab will cover:
@@ -18,7 +19,7 @@ This lab will cover:
 
 <h3 id = "3.1"> 3.1 - Data Factory pipeline copy activity</h3>
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 0 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -60,7 +61,7 @@ This lab will cover:
 
     <img src = "../assets/images/03_assistant_data_destination_table.png"/>
 
-1. On the **Settings** page, accept the defaults by clicking **Next**.
+1. On the **Settings** page, accept the defaults by selecting **Next**.
 
     <img src = "../assets/images/03_assistant_settings.png"/>
 
@@ -94,7 +95,7 @@ This lab will cover:
 
     <img src = "../assets/images/03_copy_data_running.png"/>
 
-1. On the **Output** page, when the **Activity stats** changes to **Succeeded**, select **CD Load DimDate** in the **Activity name** column.
+1. On the **Output** page, when the **Activity status** changes to **Succeeded**, select **CD Load DimDate** in the **Activity name** column.
 
     <img src = "../assets/images/03_copy_data_succeeded.png"/>
 
@@ -104,7 +105,7 @@ This lab will cover:
 
 <h3 id = "3.2">3.2 - T-SQL INSERT INTO...SELECT FROM</h3>
 
-1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in Lab 1 by selecting the **workspace icon** from the left navigation bar. 
+1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
 
@@ -114,22 +115,22 @@ This lab will cover:
 
     <img src = "../assets/images/03_workspace.png"/>
 
-1. Truncate then load the stage table for FactSale from the lakehouse using a cross database query by running the cell for **Step 3.2.3** in *The Workshop* notebook. 
+1. Truncate then load the stage table for FactSale using an INSERT INTO statement which uses OPENROWSET to read from Azure storage by running the cell for **Step 3.2.3** in *The Workshop* notebook. 
 
-    *Note: This step loads the stage.FactSale table. In the first step of the next section you will be instructed to TRUNCATE and LOAD this same table. This is not an error. The goal of this section is to introduce the INSERT INTO...SELECT FROM loading pattern which will be used for incremental loads in Lab 5 - Orchestrating warehouse operations.*
+    *Note: This step only loads data for the year 2013 into stage.FactSale table. This is to illustrate the initial load of data for the sale table. Later, in Lab 5 - Orchestrating warehouse operations, you will see the same query but with a different WHERE clause that loads all data EXCEPT 2013 to illustrate the incremental loading pattern.*
 
     ``` sql
     TRUNCATE TABLE stage.FactSale
 
     INSERT INTO stage.FactSale
-    SELECT
-        [WWICityID]
-        ,[WWICustomerID]
-        ,[WWIBillToCustomerID]
-        ,[WWIStockItemID]
+    SELECT 
+        [CityKey]
+        ,[CustomerKey]
+        ,[BillToCustomerKey]
+        ,[StockItemKey]
         ,[InvoiceDateKey]
         ,[DeliveryDateKey]
-        ,[WWISalespersonID]
+        ,[SalespersonKey]
         ,[WWIInvoiceID]
         ,[Description]
         ,[Package]
@@ -142,12 +143,12 @@ This lab will cover:
         ,[TotalIncludingTax]
         ,[TotalDryItems]
         ,[TotalChillerItems]
-    FROM WideWorldImporters.dbo.Sale
+    FROM OPENROWSET(BULK 'https://fabrictutorialdata.blob.core.windows.net/sampledata/WideWorldImportersDW/parquet/tables/FactSale.parquet') AS FactSale
+    WHERE
+        YEAR(InvoiceDateKey) = 2013
     ```
 
 1. Upon completion, the cell will have a messages output but no query results. Expand the **Messages** from the notebook cell's output. You can verify that two statements were run by the presence of two statement ids. The second message includes the number of records loaded into the table.
-
-    *Note: Your record counts will be different than the record counts shown in the screenshot below.*
 
     <img src = "../assets/images/03_insert_load.png"/>
 
@@ -165,27 +166,21 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 3 - Data loadi
 
 1. Truncate then load the stage tables listed below from Azure storage using the *COPY INTO* command by running the cell for **Step 3.3.1** in *The Workshop* notebook. Upon completion, the cell will have a messages output but no query results.
 
-    *Note: This step loads the stage.FactSale table. In the prior section this table was loaded using a different method. This is not an error. The prior section was to introduce a specific loading pattern which will be used again in a later lab. The purpose of this section's code it to see the initial dataset which is not present in the WideWorldImporters.dbo.Sale table used in the prior section.*
-
     - stage.DimCity
     - stage.DimCustomer
     - stage.DimEmployee
     - stage.DimStockItem
-    - stage.FactSale
 
     ``` sql
     TRUNCATE TABLE stage.DimCity
     TRUNCATE TABLE stage.DimCustomer
     TRUNCATE TABLE stage.DimEmployee
     TRUNCATE TABLE stage.DimStockItem
-    TRUNCATE TABLE stage.FactSale
 
-    COPY INTO [stage].[DimCity]      FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimCity.parquet'      WITH (FILE_TYPE = 'PARQUET');
-    COPY INTO [stage].[DimCustomer]  FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimCustomer.parquet'  WITH (FILE_TYPE = 'PARQUET');
-    COPY INTO [stage].[DimEmployee]  FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimEmployee.parquet'  WITH (FILE_TYPE = 'PARQUET');
-    COPY INTO [stage].[DimStockItem] FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/DimStockItem.parquet' WITH (FILE_TYPE = 'PARQUET');
-    /* The storage account location for FactSale only contains 2013-2016 data */
-    COPY INTO [stage].[FactSale]     FROM 'https://scbradlstorage01.dfs.core.windows.net/sampledata/WWI/FactSale.parquet'     WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimCity]      FROM 'https://fabrictutorialdata.blob.core.windows.net/sampledata/WideWorldImportersDW/parquet/tables/DimCity.parquet'      WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimCustomer]  FROM 'https://fabrictutorialdata.blob.core.windows.net/sampledata/WideWorldImportersDW/parquet/tables/DimCustomer.parquet'  WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimEmployee]  FROM 'https://fabrictutorialdata.blob.core.windows.net/sampledata/WideWorldImportersDW/parquet/tables/DimEmployee.parquet'  WITH (FILE_TYPE = 'PARQUET');
+    COPY INTO [stage].[DimStockItem] FROM 'https://fabrictutorialdata.blob.core.windows.net/sampledata/WideWorldImportersDW/parquet/tables/DimStockItem.parquet' WITH (FILE_TYPE = 'PARQUET');
     ```
 
     <img src = "../assets/images/03_copy_into_command.png"/>
@@ -207,17 +202,8 @@ Before beginning, open *The Workshop* notebook, navigate to **Lab 3 - Data loadi
 
     <img src = "../assets/images/03_copy_into_record_counts.png"/>
 
-    <table style="tr:nth-child(even) {background-color: #f2f2f2;}; text-align: left; display: table; border-collapse: collapse; border-spacing: 2px; border-color: gray;">
-    <tr><th style="background-color: #1b20a1; color: white;">Table</th> <th style="background-color: #1b20a1; color: white;">Record Count</th></tr>
-    <tr><td>stage.DimCity</td>      <td>37,941</td></tr>
-    <tr><td>stage.DimCustomer</td>  <td>403</td></tr>
-    <tr><td>stage.DimEmployee</td>  <td>20</td></tr>
-    <tr><td>stage.DimStockItem</td> <td>228</td></tr>
-    <tr><td>stage.FactSale</td>     <td>228,265</td></tr>
-    </table>
-
 ## Next steps
-In this lab you loaded data using a copy activity in a pipeline, the T-SQL INSERT INTO command to pull data from a lakehouse table, and the T-SQL COPY INTO command to load data from Azure storage. These are not the only methods for loading a data warehouse but they encompass the most commonly used methods. 
+In this lab you loaded data using a copy activity in a pipeline, the T-SQL INSERT INTO command along with the OPENROWSET function, and the T-SQL COPY INTO command to load data from Azure storage. These are not the only methods for loading a data warehouse but they encompass the most commonly used methods. 
 
 - Continue to [Lab 4 - Data transformation using T-SQL](<04 - Data transformation using T-SQL.md>)
 - Return to the [workshop homepage](<../README.md>)
