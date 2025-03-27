@@ -79,6 +79,10 @@ This lab will cover:
 
 1. Navigate to the **Destination** page. Expand the **Advanced** settings. In the **Pre-copy script** enter **TRUNCATE TABLE dbo.DimDate**. This will ensure if the pipeline is run multiple times it does not result in duplicate data landing in the table.
 
+    ``` sql
+    TRUNCATE TABLE dbo.DimDate
+    ```
+
     <img src = "../assets/images/03_copy_data_destination.png"/>
 
 1. From the **Home** tab of the ribbon, select **Run**.

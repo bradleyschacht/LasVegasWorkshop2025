@@ -19,6 +19,8 @@ This lab will cover:
 
 <h3 id="1.1">1.1 - Exploring the Fabric UX</h3>
 
+*Note: Lab 1.1 - Exploring the Fabric UX is **optional** and **does not** affect your ability to complete any future labs.*
+
 1. Return to the *Modern Data Warehousing on Microsoft Fabric* workspace created in *Lab 0 - Lab environment setup* by selecting the **workspace icon** from the left navigation bar. 
 
     *Note: The icons on the navigation bar can be pinned and unpinned. Therefore, the icons you see may differ from the screenshot.*
@@ -61,7 +63,7 @@ This lab will cover:
 1. Select **Run** from the top of the query editor tab for *SQL query 1*. Locate the following items after the query completes:
 
     - **Total query runtime** is displayed below the messages/results pane at the bottom of the screen.
-    - The **distributed statement id** is included in the messages output.
+    - The **distributed statement id** is included in the messages output. This is a unique identifier for each query executed used to locate queries in Fabric's query insights, DMVs, and may be requested if you need to open a support ticket for Microsoft to investigate a case. 
     - The **green spinning circle** next to the warehouse name in the Explorer indicates a DDL operation was run and the Explorer has been automatically refreshed. 
     
     <img src = "../assets/images/01_warehouse_create_table.png"/>
@@ -129,6 +131,8 @@ This lab will cover:
     <img src = "../assets/images/01_warehouse_query_delete_query_1_confirm.png"/>
 
 <h3 id="1.2">1.2 - Using client tools</h3>
+
+*Note: Lab 1.2 - Using client tools is **optional** and **does not** affect your ability to complete any future labs. To complete this section you will also need to have a client tool like SQL Server Management Studio (SSMS) or Visual Studio Code with the MSSQL extension installed.*
 
 1. With the warehouse still open, from the **Home** tab of the ribbon, select the **gear** icon from the ribbon to open the warehouse settings. 
 
