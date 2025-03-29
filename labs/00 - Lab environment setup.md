@@ -4,7 +4,7 @@
 
 ## Lab 0 - Lab environment setup
 
-Before you being:
+Before you begin:
 
 - Make sure you have read the overview on the [workshop homepage](<../README.md>).
 

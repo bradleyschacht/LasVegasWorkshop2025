@@ -4,7 +4,7 @@
 
 ## Lab 6 - Advanced query techniques
 
-Before you being:
+Before you begin:
 
 - Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 5 - Orchestrating warehouse operations](<05 - Orchestrating warehouse operations.md>), go complete all the steps then return here to continue.

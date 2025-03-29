@@ -4,7 +4,7 @@
 
 ## Lab 5 - Orchestrating warehouse operations
 
-Before you being:
+Before you begin:
 
 - Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 4 - Data transformation using T-SQL](<04 - Data transformation using T-SQL.md>), go complete all the steps then return here to continue.
@@ -45,7 +45,7 @@ This lab will cover:
 
     <img src = "../assets/images/05_new_script.png"/>
 
-1. With the **Script1** activity still selected, on the **General** page, enter **SQL Load Stage FactSale** for the the **Name** of the activity. 
+1. With the **Script1** activity still selected, on the **General** page, enter **SQL Load Stage FactSale** for the **Name** of the activity. 
 
     <img src = "../assets/images/05_fact_sale_general.png"/>
 
@@ -93,7 +93,7 @@ This lab will cover:
 
     <img src = "../assets/images/05_second_script_added.png"/>
 
-1. With the newly created activity selected, on the **General** page, enter **SQL Load Stage Dimensions** for the the **Name** of the activity. 
+1. With the newly created activity selected, on the **General** page, enter **SQL Load Stage Dimensions** for the **Name** of the activity. 
 
     <img src = "../assets/images/05_dimensions_general.png"/>
 
@@ -124,7 +124,7 @@ This lab will cover:
 
     <img src = "../assets/images/05_third_script_added.png"/>
 
-1. With the newly created activity selected, on the **General** page, enter **SQL Transform to Dimensional Model** for the the **Name** of the activity. 
+1. With the newly created activity selected, on the **General** page, enter **SQL Transform to Dimensional Model** for the **Name** of the activity. 
 
     <img src = "../assets/images/05_dimensional_model_general.png"/>
 

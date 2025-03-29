@@ -4,7 +4,7 @@
 
 ## Lab 2 - Data warehouse DDL
 
-Before you being:
+Before you begin:
 
 - Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 1 - Getting started](<01 - Getting started.md>), go complete all the steps then return here to continue.

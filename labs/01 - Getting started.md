@@ -4,7 +4,7 @@
 
 ## Lab 1 - Getting started
 
-Before you being:
+Before you begin:
 
 - Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 0 - Lab environment setup](<00 - Lab environment setup.md>), go complete all the steps then return here to continue.
@@ -39,7 +39,7 @@ This lab will cover:
         - Attach warehouse or SQL analytics endpoint
         - Warehouses (tables, stored procedures, views, functions, security roles, etc.)
         - Queries
-    - **Ribbon** conatins actions for interacting with the warehouse and semantic model including:
+    - **Ribbon** contains actions for interacting with the warehouse and semantic model including:
         - Get data (New pipeline or Dataflow Gen2)
         - New query (blank script, visual query, or notebook)
         - Templates for new tables, stored procedures, and more

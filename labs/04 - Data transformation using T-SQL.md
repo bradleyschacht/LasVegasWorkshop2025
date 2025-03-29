@@ -4,7 +4,7 @@
 
 ## Lab 4 - Data transformation using T-SQL
 
-Before you being:
+Before you begin:
 
 - Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 3 - Load data](<03 - Loading data.md>), go complete all the steps then return here to continue.
@@ -30,7 +30,7 @@ This lab will cover:
 
     <img src = "../assets/images/04_workspace.png"/>
 
-1. Create the stored procedure to generate the unknown member for each dimension table if it does not exist by running the cell for **Step 4.1.3** in *The Workshop* notebook. Upcon completion, the cell will have a message output but no query results.
+1. Create the stored procedure to generate the unknown member for each dimension table if it does not exist by running the cell for **Step 4.1.3** in *The Workshop* notebook. Upon completion, the cell will have a message output but no query results.
 
     ``` sql
     DROP PROCEDURE IF EXISTS dbo.CreateUnknownMembers

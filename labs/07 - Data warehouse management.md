@@ -4,7 +4,7 @@
 
 ## Lab 7 - Data warehouse management
 
-Before you being:
+Before you begin:
 
 - Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 6 - Advanced query techniques](<06 - Advanced query techniques.md>), go complete all the steps then return here to continue.
@@ -31,7 +31,7 @@ This lab will cover:
 
     <img src = "../assets/images/07_workspace.png"/>
 
-1. To see the current setting for the items listed below, run the cell for **Step 7.1.3** in *The Workshop* notebook. Upcon completion, the cell will a set of query results will be displayed. :
+1. To see the current setting for the items listed below, run the cell for **Step 7.1.3** in *The Workshop* notebook. Upon completion, the cell will a set of query results will be displayed. :
 
     - Collation
     - Case sensitivity

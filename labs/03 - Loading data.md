@@ -4,7 +4,7 @@
 
 ## Lab 3 - Loading data
 
-Before you being:
+Before you begin:
 
 - Make sure you have read the overview on the [workshop homepage](<../README.md>).
 - If you have not completed [Lab 2 - Data warehouse DDL](<02 - Data warehouse DDL.md>), go complete all the steps then return here to continue.
@@ -73,7 +73,7 @@ This lab will cover:
 
     <img src = "../assets/images/03_copy_data_general.png"/>
 
-1. On the **General** page, enter **CD Load DimDate** for the the **Name** of the activity. 
+1. On the **General** page, enter **CD Load DimDate** for the **Name** of the activity. 
 
     <img src = "../assets/images/03_copy_data_general_renamed.png"/>
 
@@ -156,7 +156,7 @@ This lab will cover:
 
     <img src = "../assets/images/03_insert_load.png"/>
 
-1. Validate the row count on the table matches the number of rows affeced from the message in the prior step by running the cell for **Step 3.2.5** in *The Workshop* notebook.
+1. Validate the row count on the table matches the number of rows affected from the message in the prior step by running the cell for **Step 3.2.5** in *The Workshop* notebook.
 
     ``` sql
     SELECT COUNT_BIG(*) FROM stage.FactSale
